@@ -7,6 +7,10 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
+    pub fn new(e0: f64, e1: f64, e2: f64) -> Self {
+        Vec3 { e: [e0, e1, e2] }
+    }
+
     pub fn x(&self) -> f64 {
         self.e[0]
     }
@@ -55,6 +59,12 @@ impl AddAssign for Vec3 {
 impl fmt::Display for Vec3 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} {} {}", self.e[0], self.e[1], self.e[2])
+    }
+}
+
+impl Default for Vec3 {
+    fn default() -> Self {
+        Self { e: [0.0, 0.0, 0.0] }
     }
 }
 
