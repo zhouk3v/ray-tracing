@@ -11,19 +11,22 @@ fn main() {
 
     let aspect_ratio = 16.0 / 9.0;
 
-    let image_width = 400;
+    let image_width = 400.0;
 
     // Calculate the image height, and ensure that it's at least 1
     let image_height = if image_width as f64 / aspect_ratio > 1.0 {
         image_width as f64 / aspect_ratio
     } else {
         1.0
-    } as i32;
+    };
+
+    let image_width_int = image_width as i32;
+    let image_height_int = image_height as i32;
 
     // Camera
     let focal_length = 1.0;
     let viewport_height = 2.0;
-    let viewport_width = viewport_height * (image_width / image_height) as f64;
+    let viewport_width = viewport_height * (image_width / image_height);
     let camera_center = Point3::new(0.0, 0.0, 0.0);
 
     // Calculate the vectors across the horizontal and down the vertical viewport edges
@@ -43,10 +46,10 @@ fn main() {
     println!("P3");
     println!("{image_width} {image_height}");
     println!("255");
-    for j in 0..image_height {
-        let remaining = image_height - j;
+    for j in 0..image_height_int {
+        let remaining = image_height_int - j;
         eprintln!("Scanlines remaining {remaining}");
-        for i in 0..image_width {
+        for i in 0..image_width_int {
             let pixel_center =
                 pixel00_loc + (i as f64 * pixel_delta_u) + (j as f64 * pixel_delta_v);
             let ray_direction = pixel_center - camera_center;
