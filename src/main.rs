@@ -1,9 +1,9 @@
 use ray_tracing::{
-    unit_vector, write_color, Color, Hittable, HittableList, Point3, Ray, Sphere, Vec3,
+    unit_vector, write_color, Color, Hittable, HittableList, Interval, Point3, Ray, Sphere, Vec3,
 };
 
 fn ray_color(r: &Ray, world: &impl Hittable) -> Color {
-    if let Some(rec) = world.hit(r, 0.0, f64::INFINITY) {
+    if let Some(rec) = world.hit(r, &Interval::new(0.0, f64::INFINITY)) {
         0.5 * (rec.normal + Color::new(1.0, 1.0, 1.0))
     } else {
         let unit_direction = unit_vector(*r.direction());
