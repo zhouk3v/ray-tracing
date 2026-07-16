@@ -11,16 +11,31 @@ pub struct HitRecord {
 }
 
 pub trait Hittable {
-    fn hit(&self, r: &Ray, ray_tmin: f64, ray_tmax: f64, rec: &mut HitRecord) -> bool;
+    fn hit(&self, r: &Ray, ray_tmin: f64, ray_tmax: f64) -> Option<HitRecord>;
 }
 
 impl HitRecord {
-    pub fn set_face_normal(&mut self, r: &Ray, outward_normal: &Vec3) {
-        self.front_face = dot(r.direction(), outward_normal) < 0.0;
-        self.normal = if self.front_face {
-            outward_normal.clone()
+    // fn set_face_normal(&mut self, r: &Ray, outward_normal: &Vec3) {
+    //     self.front_face = dot(r.direction(), outward_normal) < 0.0;
+    //     self.normal = if self.front_face {
+    //         outward_normal.clone()
+    //     } else {
+    //         -outward_normal.clone()
+    //     }
+    // }
+    pub fn new(t: f64, r: &Ray, outward_normal: Vec3) -> Self {
+        let p = r.at(t);
+        let front_face = dot(r.direction(), &outward_normal) < 0.0;
+        let normal = if front_face {
+            outward_normal
         } else {
-            -outward_normal.clone()
+            -outward_normal
+        };
+        HitRecord {
+            p,
+            normal,
+            t,
+            front_face,
         }
     }
 }
