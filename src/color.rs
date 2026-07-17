@@ -1,3 +1,4 @@
+use crate::interval::Interval;
 use crate::vec3::Vec3;
 
 pub type Color = Vec3;
@@ -30,9 +31,11 @@ pub fn write_color(pixel_color: &Color) {
     let g = pixel_color.y();
     let b = pixel_color.z();
 
-    let rbyte = (255.999 * r) as i64;
-    let gbyte = (255.999 * g) as i64;
-    let bbyte = (255.99 * b) as i64;
+    let intensity = Interval::new(0.000, 0.999);
+
+    let rbyte = (256.0 * intensity.clamp(r)) as i64;
+    let gbyte = (256.0 * intensity.clamp(g)) as i64;
+    let bbyte = (256.0 * intensity.clamp(b)) as i64;
 
     println!("{rbyte} {gbyte} {bbyte}")
 }
