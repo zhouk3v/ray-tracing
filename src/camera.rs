@@ -118,7 +118,7 @@ impl Camera {
             Color::new(0.0, 0.0, 0.0)
         } else if let Some(rec) = world.hit(r, &Interval::new(0.001, f64::INFINITY)) {
             let direction = rec.normal + random_unit_vector();
-            0.5 * self.ray_color(&Ray::new(rec.p, direction), depth - 1, world)
+            0.9 * self.ray_color(&Ray::new(rec.p, direction), depth - 1, world)
         } else {
             let unit_direction = unit_vector(*r.direction());
             let a = 0.5 * (unit_direction.y() + 1.0);

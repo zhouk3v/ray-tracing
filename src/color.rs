@@ -26,10 +26,18 @@ pub type Color = Vec3;
 * println! version
 */
 
+fn linear_to_gamma(linear_component: f64) -> f64 {
+    if linear_component > 0.0 {
+        linear_component.sqrt()
+    } else {
+        0.0
+    }
+}
+
 pub fn write_color(pixel_color: &Color) {
-    let r = pixel_color.x();
-    let g = pixel_color.y();
-    let b = pixel_color.z();
+    let r = linear_to_gamma(pixel_color.x());
+    let g = linear_to_gamma(pixel_color.y());
+    let b = linear_to_gamma(pixel_color.z());
 
     let intensity = Interval::new(0.000, 0.999);
 
