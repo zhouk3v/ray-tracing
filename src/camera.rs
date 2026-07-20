@@ -5,7 +5,7 @@ use crate::hittable::Hittable;
 use crate::interval::Interval;
 use crate::point3::Point3;
 use crate::ray::Ray;
-use crate::vec3::{unit_vector, Vec3};
+use crate::vec3::{random_on_hemisphere, unit_vector, Vec3};
 
 pub struct Camera {
     image_width: f64, // Rendered image width in pixel count
@@ -108,7 +108,8 @@ impl Camera {
 
     fn ray_color(&self, r: &Ray, world: &impl Hittable) -> Color {
         if let Some(rec) = world.hit(r, &Interval::new(0.0, f64::INFINITY)) {
-            0.5 * (rec.normal + Color::new(1.0, 1.0, 1.0))
+            let direction = random_on_hemisphere(&rec.normal);
+            0.5 * self.ray_color(&Ray::new(rec.p, direction), world)
         } else {
             let unit_direction = unit_vector(*r.direction());
             let a = 0.5 * (unit_direction.y() + 1.0);
