@@ -5,7 +5,7 @@ use crate::hittable::Hittable;
 use crate::interval::Interval;
 use crate::point3::Point3;
 use crate::ray::Ray;
-use crate::vec3::{random_on_hemisphere, unit_vector, Vec3};
+use crate::vec3::{random_unit_vector, unit_vector, Vec3};
 
 pub struct Camera {
     image_width: f64,         // Rendered image width in pixel count
@@ -117,7 +117,7 @@ impl Camera {
         if depth <= 0 {
             Color::new(0.0, 0.0, 0.0)
         } else if let Some(rec) = world.hit(r, &Interval::new(0.001, f64::INFINITY)) {
-            let direction = random_on_hemisphere(&rec.normal);
+            let direction = rec.normal + random_unit_vector();
             0.5 * self.ray_color(&Ray::new(rec.p, direction), depth - 1, world)
         } else {
             let unit_direction = unit_vector(*r.direction());
