@@ -116,7 +116,7 @@ impl Camera {
     fn ray_color(&self, r: &Ray, depth: u32, world: &impl Hittable) -> Color {
         if depth <= 0 {
             Color::new(0.0, 0.0, 0.0)
-        } else if let Some(rec) = world.hit(r, &Interval::new(0.0, f64::INFINITY)) {
+        } else if let Some(rec) = world.hit(r, &Interval::new(0.001, f64::INFINITY)) {
             let direction = random_on_hemisphere(&rec.normal);
             0.5 * self.ray_color(&Ray::new(rec.p, direction), depth - 1, world)
         } else {
