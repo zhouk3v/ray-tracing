@@ -7,6 +7,15 @@ pub struct ScatterRes {
     scattered: Ray,
 }
 
+impl ScatterRes {
+    pub fn new(attenuation: Color, scattered: Ray) -> Self {
+        ScatterRes {
+            attenuation,
+            scattered,
+        }
+    }
+}
+
 pub trait Material {
-    fn scatter(r_in: &Ray, rec: &HitRecord) -> ScatterRes;
+    fn scatter(&self, r_in: &Ray, rec: &HitRecord) -> ScatterRes;
 }
