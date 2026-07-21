@@ -3,8 +3,8 @@ use crate::hittable::HitRecord;
 use crate::ray::Ray;
 
 pub struct ScatterRes {
-    attenuation: Color,
-    scattered: Ray,
+    pub attenuation: Color,
+    pub scattered: Ray,
 }
 
 impl ScatterRes {
