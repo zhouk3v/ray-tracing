@@ -15,14 +15,17 @@ impl Lambertian {
 }
 
 impl Material for Lambertian {
-    fn scatter(&self, r_in: &Ray, rec: &HitRecord) -> ScatterRes {
+    fn scatter(&self, r_in: &Ray, rec: &HitRecord) -> Option<ScatterRes> {
         let scatter_direction = rec.normal + random_unit_vector();
 
         if scatter_direction.near_zero() {
             // Catch degenerate scatter direction
-            ScatterRes::new(self.albedo, Ray::new(rec.p, rec.normal))
+            Some(ScatterRes::new(self.albedo, Ray::new(rec.p, rec.normal)))
         } else {
-            ScatterRes::new(self.albedo, Ray::new(rec.p, scatter_direction))
+            Some(ScatterRes::new(
+                self.albedo,
+                Ray::new(rec.p, scatter_direction),
+            ))
         }
     }
 }
