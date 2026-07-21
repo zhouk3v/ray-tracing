@@ -1,3 +1,5 @@
+use rand;
+
 use crate::color::Color;
 use crate::hittable::HitRecord;
 use crate::material::{Material, ScatterRes};
@@ -12,6 +14,13 @@ pub struct Dielectric {
 impl Dielectric {
     pub fn new(refraction_index: f64) -> Self {
         Dielectric { refraction_index }
+    }
+
+    fn reflectance(cosine: f64, refraction_index: f64) -> f64 {
+        // Use Schlick's approximation for reflectance.
+        let r0 = (1.0 - refraction_index) / (1.0 + refraction_index);
+        let r0 = r0 * r0;
+        r0 + (1.0 - r0) * (1.0 - cosine).powi(5)
     }
 }
 
@@ -33,11 +42,12 @@ impl Material for Dielectric {
 
         let cannot_refract = ri * sin_theta > 1.0;
 
-        let direction = if cannot_refract {
-            reflect(&unit_direction, &rec.normal)
-        } else {
-            refract(&unit_direction, &rec.normal, ri)
-        };
+        let direction =
+            if cannot_refract || Dielectric::reflectance(cos_theta, ri) > rand::random::<f64>() {
+                reflect(&unit_direction, &rec.normal)
+            } else {
+                refract(&unit_direction, &rec.normal, ri)
+            };
 
         Some(ScatterRes::new(
             Color::new(1.0, 1.0, 1.0),
