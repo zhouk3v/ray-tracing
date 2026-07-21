@@ -15,7 +15,7 @@ impl Lambertian {
 }
 
 impl Material for Lambertian {
-    fn scatter(&self, r_in: &Ray, rec: &HitRecord) -> Option<ScatterRes> {
+    fn scatter(&self, _r_in: &Ray, rec: &HitRecord) -> Option<ScatterRes> {
         let scatter_direction = rec.normal + random_unit_vector();
 
         if scatter_direction.near_zero() {
