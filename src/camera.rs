@@ -5,7 +5,7 @@ use crate::hittable::Hittable;
 use crate::interval::Interval;
 use crate::point3::Point3;
 use crate::ray::Ray;
-use crate::vec3::{random_unit_vector, unit_vector, Vec3};
+use crate::vec3::{unit_vector, Vec3};
 
 pub struct Camera {
     image_width: f64,         // Rendered image width in pixel count
@@ -117,8 +117,11 @@ impl Camera {
         if depth <= 0 {
             Color::new(0.0, 0.0, 0.0)
         } else if let Some(rec) = world.hit(r, &Interval::new(0.001, f64::INFINITY)) {
-            let direction = rec.normal + random_unit_vector();
-            0.9 * self.ray_color(&Ray::new(rec.p, direction), depth - 1, world)
+            if let Some(scatter) = rec.mat.scatter(r, &rec) {
+                scatter.attenuation * self.ray_color(&scatter.scattered, depth - 1, world)
+            } else {
+                Color::new(0.0, 0.0, 0.0)
+            }
         } else {
             let unit_direction = unit_vector(*r.direction());
             let a = 0.5 * (unit_direction.y() + 1.0);
