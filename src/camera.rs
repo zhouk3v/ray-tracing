@@ -25,6 +25,7 @@ impl Camera {
         image_width: f64,
         samples_per_pixel: i32,
         max_depth: u32,
+        vfov: f64,
     ) -> Self {
         let mut image_height = image_width / aspect_ratio;
         image_height = if image_height < 1.0 {
@@ -37,7 +38,9 @@ impl Camera {
 
         // Determine viewport dimensions
         let focal_length = 1.0;
-        let viewport_height = 2.0;
+        let theta = vfov.to_radians();
+        let h = (theta / 2.0).tan();
+        let viewport_height = 2.0 * h * focal_length;
         let viewport_width = viewport_height * (image_width / image_height);
 
         // Calculate the vectors across the horizontal and down the vertical viewport edges
