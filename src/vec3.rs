@@ -203,6 +203,19 @@ pub fn unit_vector(v: Vec3) -> Vec3 {
     v / v.length()
 }
 
+pub fn random_in_unit_disk() -> Vec3 {
+    loop {
+        let p = Vec3::new(
+            rand::random_range(-1.0..1.0),
+            rand::random_range(-1.0..1.0),
+            0.0,
+        );
+        if p.length_squared() < 1.0 {
+            break p;
+        }
+    }
+}
+
 pub fn random_unit_vector() -> Vec3 {
     loop {
         let p = Vec3::random_with_min_max(-1.0, 1.0);
