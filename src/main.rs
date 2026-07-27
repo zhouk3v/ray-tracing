@@ -26,8 +26,10 @@ fn main() {
                     // diffuse
                     let albedo = Color::random() * Color::random();
                     let sphere_material = Lambertian::new(albedo);
-                    world.add(Box::new(Sphere::new(
+                    let center2 = center + Vec3::new(0.0, rand::random_range(0.0..0.5), 0.0);
+                    world.add(Box::new(Sphere::new_moving(
                         center,
+                        center2,
                         0.2,
                         Box::new(sphere_material),
                     )));
@@ -77,8 +79,8 @@ fn main() {
 
     let cam = Camera::new(
         16.0 / 9.0,
-        1200.0,
-        10,
+        400.0,
+        100,
         50,
         20.0,
         Point3::new(13.0, 2.0, 3.0),
