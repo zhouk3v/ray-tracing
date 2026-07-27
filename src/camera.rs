@@ -130,7 +130,9 @@ impl Camera {
 
         let ray_direction = pixel_sample - ray_origin;
 
-        Ray::new(ray_origin, ray_direction)
+        let ray_time = rand::random::<f64>();
+
+        Ray::new(ray_origin, ray_direction, ray_time)
     }
 
     fn sample_square(&self) -> Vec3 {
