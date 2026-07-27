@@ -4,19 +4,32 @@ use crate::interval::Interval;
 use crate::material::Material;
 use crate::point3::Point3;
 use crate::ray::Ray;
+use crate::vec3::Vec3;
 
 pub struct Sphere {
-    center: Point3,
+    center: Ray,
     radius: f64,
     mat: Box<dyn Material>,
 }
 
 impl Sphere {
-    pub fn new(center: Point3, radius: f64, mat: Box<dyn Material>) -> Self {
-        // TODO: Initialize Box to material
+    pub fn new(static_center: Point3, radius: f64, mat: Box<dyn Material>) -> Self {
         Sphere {
-            center,
-            radius,
+            center: Ray::new_with_default_time(static_center, Vec3::new(0.0, 0.0, 0.0)),
+            radius: if radius > 0.0 { radius } else { 0.0 },
+            mat,
+        }
+    }
+
+    pub fn new_moving(
+        center1: Point3,
+        center2: Point3,
+        radius: f64,
+        mat: Box<dyn Material>,
+    ) -> Self {
+        Sphere {
+            center: Ray::new_with_default_time(center1, center2 - center1),
+            radius: if radius > 0.0 { radius } else { 0.0 },
             mat,
         }
     }
@@ -24,7 +37,8 @@ impl Sphere {
 
 impl Hittable for Sphere {
     fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord> {
-        let oc = self.center - *r.origin();
+        let current_center = self.center.at(r.time());
+        let oc = current_center - *r.origin();
         let a = r.direction().length_squared();
         let h = dot(r.direction(), &oc);
         let c = oc.length_squared() - self.radius * self.radius;
@@ -43,12 +57,12 @@ impl Hittable for Sphere {
                 if !ray_t.surrounds(root) {
                     None
                 } else {
-                    let outward_normal = (r.at(root) - self.center) / self.radius;
+                    let outward_normal = (r.at(root) - current_center) / self.radius;
                     let rec = HitRecord::new(root, r, outward_normal, &self.mat);
                     Some(rec)
                 }
             } else {
-                let outward_normal = (r.at(root) - self.center) / self.radius;
+                let outward_normal = (r.at(root) - current_center) / self.radius;
                 let rec = HitRecord::new(root, r, outward_normal, &self.mat);
                 Some(rec)
             }
