@@ -15,6 +15,13 @@ impl Interval {
     pub fn new(min: f64, max: f64) -> Self {
         Interval { min, max }
     }
+    pub fn new_from_intervals(a: &Interval, b: &Interval) -> Self {
+        // Create the interval tightly enclosing the two input intervals
+        Interval {
+            min: if a.min <= b.min { a.min } else { b.min },
+            max: if a.max >= b.max { a.max } else { b.max },
+        }
+    }
     pub fn size(&self) -> f64 {
         self.max - self.min
     }

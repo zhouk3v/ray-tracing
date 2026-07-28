@@ -1,3 +1,4 @@
+use crate::aabb::Aabb;
 use crate::dot;
 use crate::interval::Interval;
 use crate::material::Material;
@@ -15,6 +16,8 @@ pub struct HitRecord<'a> {
 
 pub trait Hittable {
     fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord>;
+
+    fn bounding_box(&self) -> &Aabb;
 }
 
 impl<'a> HitRecord<'a> {
