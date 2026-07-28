@@ -1,3 +1,4 @@
+pub mod aabb;
 pub mod camera;
 pub mod color;
 pub mod dielectric;
@@ -12,6 +13,7 @@ pub mod ray;
 pub mod sphere;
 pub mod vec3;
 
+pub use aabb::Aabb;
 pub use camera::Camera;
 pub use color::{write_color, Color};
 pub use dielectric::Dielectric;
