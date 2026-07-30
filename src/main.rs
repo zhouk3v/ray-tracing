@@ -27,8 +27,9 @@ fn main() {
                     let albedo = Color::random() * Color::random();
                     let sphere_material = Lambertian::new(albedo);
                     let center2 = center + Vec3::new(0.0, rand::random_range(0.0..0.5), 0.0);
-                    objects.add(Box::new(Sphere::new(
+                    objects.add(Box::new(Sphere::new_moving(
                         center,
+                        center2,
                         0.2,
                         Box::new(sphere_material),
                     )));

@@ -33,8 +33,8 @@ impl Sphere {
     ) -> Self {
         let center = Ray::new_with_default_time(center1, center2 - center1);
         let rvec = Vec3::new(radius, radius, radius);
-        let box1 = Aabb::new_from_points(&center.at(0.0), &(center.at(0.0) + rvec));
-        let box2 = Aabb::new_from_points(&center.at(1.0), &(center.at(1.0) + rvec));
+        let box1 = Aabb::new_from_points(&(center.at(0.0) - rvec), &(center.at(0.0) + rvec));
+        let box2 = Aabb::new_from_points(&(center.at(1.0) - rvec), &(center.at(1.0) + rvec));
         Sphere {
             center,
             radius: if radius > 0.0 { radius } else { 0.0 },
