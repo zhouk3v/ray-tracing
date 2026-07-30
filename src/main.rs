@@ -1,12 +1,12 @@
 use ray_tracing::{
-    Camera, Color, Dielectric, HittableList, Lambertian, Metal, Point3, Sphere, Vec3,
+    BVHNode, Camera, Color, Dielectric, HittableList, Lambertian, Metal, Point3, Sphere, Vec3,
 };
 
 fn main() {
-    let mut world = HittableList::new();
+    let mut objects = HittableList::new();
 
     let ground_material = Lambertian::new(Color::new(0.5, 0.5, 0.5));
-    world.add(Box::new(Sphere::new(
+    objects.add(Box::new(Sphere::new(
         Point3::new(0.0, -1000.0, 0.0),
         1000.0,
         Box::new(ground_material),
@@ -27,9 +27,8 @@ fn main() {
                     let albedo = Color::random() * Color::random();
                     let sphere_material = Lambertian::new(albedo);
                     let center2 = center + Vec3::new(0.0, rand::random_range(0.0..0.5), 0.0);
-                    world.add(Box::new(Sphere::new_moving(
+                    objects.add(Box::new(Sphere::new(
                         center,
-                        center2,
                         0.2,
                         Box::new(sphere_material),
                     )));
@@ -38,7 +37,7 @@ fn main() {
                     let albedo = Color::random_with_min_max(0.5, 1.0);
                     let fuzz = rand::random_range(0.0..0.5);
                     let sphere_material = Metal::new(albedo, fuzz);
-                    world.add(Box::new(Sphere::new(
+                    objects.add(Box::new(Sphere::new(
                         center,
                         0.2,
                         Box::new(sphere_material),
@@ -46,7 +45,7 @@ fn main() {
                 } else {
                     // glass
                     let sphere_material = Dielectric::new(1.5);
-                    world.add(Box::new(Sphere::new(
+                    objects.add(Box::new(Sphere::new(
                         center,
                         0.2,
                         Box::new(sphere_material),
@@ -57,25 +56,28 @@ fn main() {
     }
 
     let material1 = Dielectric::new(1.5);
-    world.add(Box::new(Sphere::new(
+    objects.add(Box::new(Sphere::new(
         Point3::new(0.0, 1.0, 0.0),
         1.0,
         Box::new(material1),
     )));
 
     let material2 = Lambertian::new(Color::new(0.4, 0.2, 0.1));
-    world.add(Box::new(Sphere::new(
+    objects.add(Box::new(Sphere::new(
         Point3::new(-4.0, 1.0, 0.0),
         1.0,
         Box::new(material2),
     )));
 
     let material3 = Metal::new(Color::new(0.7, 0.6, 0.5), 0.0);
-    world.add(Box::new(Sphere::new(
+    objects.add(Box::new(Sphere::new(
         Point3::new(4.0, 1.0, 0.0),
         1.0,
         Box::new(material3),
     )));
+
+    let mut world = HittableList::new();
+    world.add(Box::new(BVHNode::new(objects)));
 
     let cam = Camera::new(
         16.0 / 9.0,

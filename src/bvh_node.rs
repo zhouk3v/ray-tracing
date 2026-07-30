@@ -18,7 +18,11 @@ impl BVHNode {
     fn new_from_vec(mut objects: Vec<Box<dyn Hittable>>) -> Self {
         let axis = rand::random_range(0..=2);
 
-        objects.sort();
+        objects.sort_by(|a, b| {
+            let a_axis_interval = a.bounding_box().axis_interval(axis);
+            let b_axis_interval = b.bounding_box().axis_interval(axis);
+            a_axis_interval.min.total_cmp(&b_axis_interval.min)
+        });
 
         match objects.len() {
             0 => BVHNode {
@@ -27,7 +31,7 @@ impl BVHNode {
                 bbox: Aabb::default(),
             },
             1 => {
-                let obj = objects[0];
+                let obj = objects.pop().unwrap();
                 let bbox = Aabb::new_from_aabb(obj.bounding_box(), obj.bounding_box());
                 BVHNode {
                     left: Some(obj),
@@ -36,8 +40,8 @@ impl BVHNode {
                 }
             }
             2 => {
-                let left = objects[0];
-                let right = objects[1];
+                let right = objects.pop().unwrap();
+                let left = objects.pop().unwrap();
                 let bbox = Aabb::new_from_aabb(left.bounding_box(), right.bounding_box());
                 BVHNode {
                     left: Some(left),
