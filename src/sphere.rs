@@ -67,12 +67,12 @@ impl Hittable for Sphere {
                     None
                 } else {
                     let outward_normal = (r.at(root) - current_center) / self.radius;
-                    let rec = HitRecord::new(root, r, outward_normal, &self.mat);
+                    let rec = HitRecord::new(root, r, outward_normal, self.mat.as_ref());
                     Some(rec)
                 }
             } else {
                 let outward_normal = (r.at(root) - current_center) / self.radius;
-                let rec = HitRecord::new(root, r, outward_normal, &self.mat);
+                let rec = HitRecord::new(root, r, outward_normal, self.mat.as_ref());
                 Some(rec)
             }
         }
