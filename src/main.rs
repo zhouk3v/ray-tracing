@@ -1,5 +1,6 @@
 use ray_tracing::{
-    BVHNode, Camera, Color, Dielectric, HittableList, Lambertian, Metal, Point3, Sphere, Vec3,
+    BVHNode, Camera, CameraPosition, Color, Dielectric, HittableList, ImageDimensions, Lambertian,
+    Metal, Point3, Sphere, Vec3,
 };
 
 fn main() {
@@ -80,18 +81,15 @@ fn main() {
     let mut world = HittableList::new();
     world.add(Box::new(BVHNode::new(objects)));
 
-    let cam = Camera::new(
-        16.0 / 9.0,
-        400.0,
-        100,
-        50,
-        20.0,
+    let image_dim = ImageDimensions::new(16.0 / 9.0, 400.0);
+
+    let cam_position = CameraPosition::new(
         Point3::new(13.0, 2.0, 3.0),
         Point3::new(0.0, 0.0, 0.0),
         Vec3::new(0.0, 1.0, 0.0),
-        0.6,
-        10.0,
     );
+
+    let cam = Camera::new(image_dim, 100, 50, 20.0, cam_position, 0.6, 10.0);
 
     cam.render(&world);
 }

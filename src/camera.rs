@@ -7,6 +7,36 @@ use crate::point3::Point3;
 use crate::ray::Ray;
 use crate::vec3::{cross, random_in_unit_disk, unit_vector, Vec3};
 
+pub struct ImageDimensions {
+    aspect_ratio: f64,
+    image_width: f64,
+}
+
+impl ImageDimensions {
+    pub fn new(aspect_ratio: f64, image_width: f64) -> Self {
+        Self {
+            aspect_ratio,
+            image_width,
+        }
+    }
+}
+
+pub struct CameraPosition {
+    lookfrom: Point3, // Point camera is looking from
+    lookat: Point3,   // Point camera is looking at
+    vup: Vec3,        // Camera-relative "up" direction
+}
+
+impl CameraPosition {
+    pub fn new(lookfrom: Point3, lookat: Point3, vup: Vec3) -> Self {
+        CameraPosition {
+            lookfrom,
+            lookat,
+            vup,
+        }
+    }
+}
+
 pub struct Camera {
     image_width: f64,         // Rendered image width in pixel count
     samples_per_pixel: i32,   // Count of random samples for each pixel
@@ -24,17 +54,16 @@ pub struct Camera {
 
 impl Camera {
     pub fn new(
-        aspect_ratio: f64,
-        image_width: f64,
+        image_dimensions: ImageDimensions,
         samples_per_pixel: i32,
         max_depth: u32,
-        vfov: f64,          // Vertical view angle (field of view)
-        lookfrom: Point3,   // Point camera is looking from
-        lookat: Point3,     // Point camera is looking at
-        vup: Vec3,          // Camera-relative "up" direction
-        defocus_angle: f64, // Variation angle of rays through each pixel
-        focus_dist: f64,    // Distance from camera lookfrom point to plane of perfect focus
+        vfov: f64,                // Vertical view angle (field of view)
+        position: CameraPosition, // Position of camera
+        defocus_angle: f64,       // Variation angle of rays through each pixel
+        focus_dist: f64,          // Distance from camera lookfrom point to plane of perfect focus
     ) -> Self {
+        let image_width = image_dimensions.image_width;
+        let aspect_ratio = image_dimensions.aspect_ratio;
         let mut image_height = image_width / aspect_ratio;
         image_height = if image_height < 1.0 {
             1.0
@@ -42,7 +71,7 @@ impl Camera {
             image_height
         };
 
-        let center = lookfrom;
+        let center = position.lookfrom;
 
         // Determine viewport dimensions
         let theta = vfov.to_radians();
@@ -51,8 +80,8 @@ impl Camera {
         let viewport_width = viewport_height * (image_width / image_height);
 
         // Calculate the u,v,w unit basis vectors for the camera coordinate frame
-        let w = unit_vector(lookfrom - lookat);
-        let u = unit_vector(cross(&vup, &w));
+        let w = unit_vector(position.lookfrom - position.lookat);
+        let u = unit_vector(cross(&position.vup, &w));
         let v = cross(&w, &u);
 
         // Calculate the vectors across the horizontal and down the vertical viewport edges
@@ -60,8 +89,8 @@ impl Camera {
         let viewport_v = viewport_height * -v; // Vector across viewport vertical edge
 
         // Calculate the horizontal and vertical delta vectors from pixel to pixel
-        let pixel_delta_u = viewport_u / image_width as f64;
-        let pixel_delta_v = viewport_v / image_height as f64;
+        let pixel_delta_u = viewport_u / image_width;
+        let pixel_delta_v = viewport_v / image_height;
 
         // Calculate the location of the upper left pixel
         let viewport_upper_left = center - (focus_dist * w) - viewport_u / 2.0 - viewport_v / 2.0;
@@ -148,8 +177,9 @@ impl Camera {
         self.center + (p[0] * self.defocus_disk_u) + (p[1] * self.defocus_disk_v)
     }
 
+    #[allow(clippy::only_used_in_recursion)]
     fn ray_color(&self, r: &Ray, depth: u32, world: &impl Hittable) -> Color {
-        if depth <= 0 {
+        if depth == 0 {
             Color::new(0.0, 0.0, 0.0)
         } else if let Some(rec) = world.hit(r, &Interval::new(0.001, f64::INFINITY)) {
             if let Some(scatter) = rec.mat.scatter(r, &rec) {

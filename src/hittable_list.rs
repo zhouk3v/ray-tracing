@@ -21,8 +21,14 @@ impl HittableList {
     }
 
     pub fn add(&mut self, object: Box<dyn Hittable>) {
-        self.bbox = Aabb::new_from_aabb(&self.bbox, &object.bounding_box());
+        self.bbox = Aabb::new_from_aabb(&self.bbox, object.bounding_box());
         self.objects.push(object);
+    }
+}
+
+impl Default for HittableList {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -34,7 +40,7 @@ impl Hittable for HittableList {
         for object in self.objects.iter() {
             if let Some(rec) = object.hit(r, &closest_so_far_interval) {
                 closest_so_far_interval.max = rec.t;
-                temp_rec = Some(rec)
+                temp_rec = Some(rec);
             }
         }
         temp_rec

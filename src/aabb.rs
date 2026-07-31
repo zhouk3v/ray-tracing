@@ -2,6 +2,7 @@ use crate::interval::Interval;
 use crate::point3::Point3;
 use crate::ray::Ray;
 
+#[derive(Default)]
 pub struct Aabb {
     x: Interval,
     y: Interval,
@@ -87,15 +88,5 @@ impl Aabb {
             }
         }
         Some(res)
-    }
-}
-
-impl Default for Aabb {
-    fn default() -> Self {
-        Aabb {
-            x: Interval::default(),
-            y: Interval::default(),
-            z: Interval::default(),
-        }
     }
 }

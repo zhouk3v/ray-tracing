@@ -16,7 +16,7 @@ pub mod vec3;
 
 pub use aabb::Aabb;
 pub use bvh_node::BVHNode;
-pub use camera::Camera;
+pub use camera::{Camera, CameraPosition, ImageDimensions};
 pub use color::{write_color, Color};
 pub use dielectric::Dielectric;
 pub use hittable::{HitRecord, Hittable};

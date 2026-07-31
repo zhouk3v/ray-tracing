@@ -82,7 +82,7 @@ impl BVHNode {
 
 impl Hittable for BVHNode {
     fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord> {
-        if let Some(_) = self.bbox.hit(r, ray_t) {
+        if self.bbox.hit(r, ray_t).is_some() {
             if let Some(hit_left) = self.hit_left(r, ray_t) {
                 if let Some(hit_right) = self.hit_right(r, &Interval::new(ray_t.min, hit_left.t)) {
                     Some(hit_right)
