@@ -72,12 +72,11 @@ impl Aabb {
         };
 
         for axis in 0..3 {
-            let axis_usize = axis as usize;
             let ax = self.axis_interval(axis);
-            let adinv = 1.0 / ray_dir[axis_usize];
+            let adinv = 1.0 / ray_dir[axis];
 
-            let t0 = (ax.min - ray_orig[axis_usize]) * adinv;
-            let t1 = (ax.max - ray_orig[axis_usize]) * adinv;
+            let t0 = (ax.min - ray_orig[axis]) * adinv;
+            let t1 = (ax.max - ray_orig[axis]) * adinv;
 
             if t0 < t1 {
                 if t0 > res.min {
