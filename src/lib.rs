@@ -10,4 +10,4 @@ pub use materials::{Dielectric, Lambertian, Material, Metal};
 pub use primitives::{
     cross, dot, unit_vector, write_color, Aabb, Color, Interval, Point3, Ray, Vec3,
 };
-pub use textures::{SolidColor, Texture};
+pub use textures::{CheckerTexture, SolidColor, Texture};

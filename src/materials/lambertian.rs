@@ -3,14 +3,22 @@ use crate::hittables::hittable::HitRecord;
 use crate::primitives::color::Color;
 use crate::primitives::ray::Ray;
 use crate::primitives::vec3::random_unit_vector;
+use crate::textures::solid_color::SolidColor;
+use crate::textures::texture::Texture;
 
 pub struct Lambertian {
-    albedo: Color,
+    tex: Box<dyn Texture>,
 }
 
 impl Lambertian {
     pub fn new(albedo: Color) -> Self {
-        Lambertian { albedo }
+        Lambertian {
+            tex: Box::new(SolidColor::new(albedo)),
+        }
+    }
+
+    pub fn new_with_texture(tex: Box<dyn Texture>) -> Self {
+        Lambertian { tex }
     }
 }
 
@@ -21,12 +29,12 @@ impl Material for Lambertian {
         if scatter_direction.near_zero() {
             // Catch degenerate scatter direction
             Some(ScatterRes::new(
-                self.albedo,
+                self.tex.value(rec.u, rec.v, &rec.p),
                 Ray::new(rec.p, rec.normal, r_in.time()),
             ))
         } else {
             Some(ScatterRes::new(
-                self.albedo,
+                self.tex.value(rec.u, rec.v, &rec.p),
                 Ray::new(rec.p, scatter_direction, r_in.time()),
             ))
         }
