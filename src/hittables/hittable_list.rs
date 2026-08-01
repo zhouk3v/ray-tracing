@@ -1,7 +1,7 @@
 use super::hittable::{HitRecord, Hittable};
-use crate::aabb::Aabb;
-use crate::ray::Ray;
-use crate::Interval;
+use crate::primitives::aabb::Aabb;
+use crate::primitives::interval::Interval;
+use crate::primitives::ray::Ray;
 
 pub struct HittableList {
     pub objects: Vec<Box<dyn Hittable>>,

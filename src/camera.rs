@@ -1,11 +1,9 @@
-use rand;
-
-use crate::color::{write_color, Color};
 use crate::hittables::hittable::Hittable;
-use crate::interval::Interval;
-use crate::point3::Point3;
-use crate::ray::Ray;
-use crate::vec3::{cross, random_in_unit_disk, unit_vector, Vec3};
+use crate::primitives::color::{write_color, Color};
+use crate::primitives::interval::Interval;
+use crate::primitives::point3::Point3;
+use crate::primitives::ray::Ray;
+use crate::primitives::vec3::{cross, random_in_unit_disk, unit_vector, Vec3};
 
 pub struct ImageDimensions {
     aspect_ratio: f64,

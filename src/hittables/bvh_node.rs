@@ -1,8 +1,8 @@
 use super::hittable::{HitRecord, Hittable};
 use super::hittable_list::HittableList;
-use crate::aabb::Aabb;
-use crate::interval::Interval;
-use crate::ray::Ray;
+use crate::primitives::aabb::Aabb;
+use crate::primitives::interval::Interval;
+use crate::primitives::ray::Ray;
 
 pub struct BVHNode {
     left: Option<Box<dyn Hittable>>,

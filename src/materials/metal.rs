@@ -1,8 +1,8 @@
 use super::material::{Material, ScatterRes};
-use crate::color::Color;
 use crate::hittables::hittable::HitRecord;
-use crate::ray::Ray;
-use crate::vec3::{dot, random_unit_vector, reflect, unit_vector};
+use crate::primitives::color::Color;
+use crate::primitives::ray::Ray;
+use crate::primitives::vec3::{dot, random_unit_vector, reflect, unit_vector};
 
 pub struct Metal {
     albedo: Color,

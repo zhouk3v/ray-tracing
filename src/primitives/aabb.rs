@@ -1,6 +1,6 @@
-use crate::interval::Interval;
-use crate::point3::Point3;
-use crate::ray::Ray;
+use super::interval::Interval;
+use super::point3::Point3;
+use super::ray::Ray;
 
 #[derive(Default)]
 pub struct Aabb {

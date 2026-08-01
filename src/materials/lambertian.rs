@@ -1,8 +1,8 @@
 use super::material::{Material, ScatterRes};
-use crate::color::Color;
 use crate::hittables::hittable::HitRecord;
-use crate::ray::Ray;
-use crate::vec3::random_unit_vector;
+use crate::primitives::color::Color;
+use crate::primitives::ray::Ray;
+use crate::primitives::vec3::random_unit_vector;
 
 pub struct Lambertian {
     albedo: Color,

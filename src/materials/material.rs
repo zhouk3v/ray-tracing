@@ -1,6 +1,6 @@
-use crate::color::Color;
 use crate::hittables::hittable::HitRecord;
-use crate::ray::Ray;
+use crate::primitives::color::Color;
+use crate::primitives::ray::Ray;
 
 pub struct ScatterRes {
     pub attenuation: Color,

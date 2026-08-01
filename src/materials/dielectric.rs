@@ -1,10 +1,8 @@
-use rand;
-
 use super::material::{Material, ScatterRes};
-use crate::color::Color;
 use crate::hittables::hittable::HitRecord;
-use crate::ray::Ray;
-use crate::vec3::{dot, reflect, refract, unit_vector};
+use crate::primitives::color::Color;
+use crate::primitives::ray::Ray;
+use crate::primitives::vec3::{dot, reflect, refract, unit_vector};
 
 pub struct Dielectric {
     refraction_index: f64, // Refractive index in vacuum or air, or the ratio of the material's refractive index over

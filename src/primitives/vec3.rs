@@ -1,4 +1,3 @@
-use rand;
 use std::fmt;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, Mul, MulAssign, Neg, Sub};
 

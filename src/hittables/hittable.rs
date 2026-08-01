@@ -1,10 +1,9 @@
-use crate::aabb::Aabb;
-use crate::dot;
-use crate::interval::Interval;
 use crate::materials::Material;
-use crate::point3::Point3;
-use crate::ray::Ray;
-use crate::vec3::Vec3;
+use crate::primitives::aabb::Aabb;
+use crate::primitives::interval::Interval;
+use crate::primitives::point3::Point3;
+use crate::primitives::ray::Ray;
+use crate::primitives::vec3::{dot, Vec3};
 
 pub struct HitRecord<'a> {
     pub p: Point3,
