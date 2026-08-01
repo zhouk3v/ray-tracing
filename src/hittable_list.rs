@@ -33,7 +33,7 @@ impl Default for HittableList {
 }
 
 impl Hittable for HittableList {
-    fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord> {
+    fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord<'_>> {
         let mut temp_rec = None;
         let mut closest_so_far_interval = Interval::new(ray_t.min, ray_t.max);
 
