@@ -10,12 +10,24 @@ pub struct Aabb {
 }
 
 impl Aabb {
+    pub const EMPTY: Self = Self {
+        x: Interval::EMPTY,
+        y: Interval::EMPTY,
+        z: Interval::EMPTY,
+    };
+
+    pub const UNIVERSE: Self = Self {
+        x: Interval::UNIVERSE,
+        y: Interval::UNIVERSE,
+        z: Interval::UNIVERSE,
+    };
+
     pub fn new(x: Interval, y: Interval, z: Interval) -> Self {
-        Aabb { x, y, z }
+        Self { x, y, z }
     }
 
     pub fn new_from_points(a: &Point3, b: &Point3) -> Self {
-        Aabb {
+        Self {
             x: if a[0] <= b[0] {
                 Interval::new(a[0], b[0])
             } else {
@@ -35,14 +47,14 @@ impl Aabb {
     }
 
     pub fn new_from_aabb(box0: &Aabb, box1: &Aabb) -> Self {
-        Aabb {
+        Self {
             x: Interval::new_from_intervals(&box0.x, &box1.x),
             y: Interval::new_from_intervals(&box0.y, &box1.y),
             z: Interval::new_from_intervals(&box0.z, &box1.z),
         }
     }
 
-    pub fn axis_interval(&self, n: i32) -> &Interval {
+    pub fn axis_interval(&self, n: usize) -> &Interval {
         match n {
             1 => &self.y,
             2 => &self.z,
@@ -88,5 +100,21 @@ impl Aabb {
             }
         }
         Some(res)
+    }
+
+    pub fn longest_axis(&self) -> usize {
+        if self.x.size() > self.y.size() {
+            if self.x.size() > self.z.size() {
+                0
+            } else {
+                2
+            }
+        } else {
+            if self.y.size() > self.z.size() {
+                1
+            } else {
+                2
+            }
+        }
     }
 }

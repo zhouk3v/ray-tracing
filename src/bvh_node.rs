@@ -16,7 +16,15 @@ impl BVHNode {
     }
 
     fn new_from_vec(mut objects: Vec<Box<dyn Hittable>>) -> Self {
-        let axis = rand::random_range(0..=2);
+        let mut bbox = Aabb::EMPTY;
+
+        let objects_iter = objects.iter();
+
+        for object in objects_iter {
+            bbox = Aabb::new_from_aabb(&bbox, object.bounding_box())
+        }
+
+        let axis = bbox.longest_axis();
 
         objects.sort_by(|a, b| {
             let a_axis_interval = a.bounding_box().axis_interval(axis);
@@ -28,11 +36,10 @@ impl BVHNode {
             0 => BVHNode {
                 left: None,
                 right: None,
-                bbox: Aabb::default(),
+                bbox,
             },
             1 => {
                 let obj = objects.pop().unwrap();
-                let bbox = Aabb::new_from_aabb(obj.bounding_box(), obj.bounding_box());
                 BVHNode {
                     left: Some(obj),
                     right: None,
@@ -42,7 +49,6 @@ impl BVHNode {
             2 => {
                 let right = objects.pop().unwrap();
                 let left = objects.pop().unwrap();
-                let bbox = Aabb::new_from_aabb(left.bounding_box(), right.bounding_box());
                 BVHNode {
                     left: Some(left),
                     right: Some(right),
@@ -53,7 +59,6 @@ impl BVHNode {
                 let right_half = objects.split_off(len / 2);
                 let left_node = BVHNode::new_from_vec(objects);
                 let right_node = BVHNode::new_from_vec(right_half);
-                let bbox = Aabb::new_from_aabb(left_node.bounding_box(), right_node.bounding_box());
                 BVHNode {
                     left: Some(Box::new(left_node)),
                     right: Some(Box::new(right_node)),
