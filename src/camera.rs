@@ -1,7 +1,7 @@
 use rand;
 
 use crate::color::{write_color, Color};
-use crate::hittable::Hittable;
+use crate::hittables::hittable::Hittable;
 use crate::interval::Interval;
 use crate::point3::Point3;
 use crate::ray::Ray;

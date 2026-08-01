@@ -1,6 +1,6 @@
-use crate::color::Color;
-use crate::hittable::HitRecord;
 use super::material::{Material, ScatterRes};
+use crate::color::Color;
+use crate::hittables::hittable::HitRecord;
 use crate::ray::Ray;
 use crate::vec3::random_unit_vector;
 

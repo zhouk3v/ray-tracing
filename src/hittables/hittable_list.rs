@@ -1,5 +1,5 @@
+use super::hittable::{HitRecord, Hittable};
 use crate::aabb::Aabb;
-use crate::hittable::{HitRecord, Hittable};
 use crate::ray::Ray;
 use crate::Interval;
 

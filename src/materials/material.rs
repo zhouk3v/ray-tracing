@@ -1,5 +1,5 @@
 use crate::color::Color;
-use crate::hittable::HitRecord;
+use crate::hittables::hittable::HitRecord;
 use crate::ray::Ray;
 
 pub struct ScatterRes {

@@ -1,6 +1,6 @@
+use super::hittable::{HitRecord, Hittable};
+use super::hittable_list::HittableList;
 use crate::aabb::Aabb;
-use crate::hittable::{HitRecord, Hittable};
-use crate::hittable_list::HittableList;
 use crate::interval::Interval;
 use crate::ray::Ray;
 
