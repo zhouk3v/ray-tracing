@@ -1,8 +1,8 @@
 use rand;
 
+use super::material::{Material, ScatterRes};
 use crate::color::Color;
 use crate::hittable::HitRecord;
-use crate::material::{Material, ScatterRes};
 use crate::ray::Ray;
 use crate::vec3::{dot, reflect, refract, unit_vector};
 

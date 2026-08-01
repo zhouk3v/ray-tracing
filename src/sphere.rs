@@ -2,7 +2,7 @@ use crate::aabb::Aabb;
 use crate::dot;
 use crate::hittable::{HitRecord, Hittable};
 use crate::interval::Interval;
-use crate::material::Material;
+use crate::materials::Material;
 use crate::point3::Point3;
 use crate::ray::Ray;
 use crate::vec3::Vec3;
