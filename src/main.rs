@@ -81,7 +81,7 @@ fn main() {
     let mut world = HittableList::new();
     world.add(Box::new(BVHNode::new(objects)));
 
-    let image_dim = ImageDimensions::new(16.0 / 9.0, 400.0);
+    let image_dim = ImageDimensions::new(16.0 / 9.0, 1200.0);
 
     let cam_position = CameraPosition::new(
         Point3::new(13.0, 2.0, 3.0),
