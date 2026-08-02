@@ -1,4 +1,4 @@
-use crate::materials::Material;
+use crate::materials::material::Material;
 use crate::primitives::aabb::Aabb;
 use crate::primitives::interval::Interval;
 use crate::primitives::point3::Point3;

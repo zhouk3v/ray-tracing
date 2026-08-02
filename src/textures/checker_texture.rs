@@ -1,5 +1,5 @@
-use super::SolidColor;
-use super::Texture;
+use super::solid_color::SolidColor;
+use super::texture::Texture;
 use crate::primitives::color::Color;
 use crate::primitives::point3::Point3;
 
