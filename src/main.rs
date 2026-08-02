@@ -7,7 +7,7 @@ enum Scene {
 }
 
 fn main() {
-    let scene = Scene::BOUNCING;
+    let scene = Scene::CHECKERED;
     match scene {
         Scene::BOUNCING => bouncing_spheres(),
         Scene::CHECKERED => checkered_spheres(),
