@@ -22,7 +22,14 @@ pub trait Hittable {
 }
 
 impl<'a> HitRecord<'a> {
-    pub fn new(t: f64, r: &Ray, outward_normal: Vec3, mat: &'a dyn Material) -> Self {
+    pub fn new(
+        t: f64,
+        r: &Ray,
+        outward_normal: Vec3,
+        mat: &'a dyn Material,
+        u: f64,
+        v: f64,
+    ) -> Self {
         let p = r.at(t);
         let front_face = dot(r.direction(), &outward_normal) < 0.0;
         let normal = if front_face {
@@ -35,6 +42,8 @@ impl<'a> HitRecord<'a> {
             normal,
             mat,
             t,
+            u,
+            v,
             front_face,
         }
     }

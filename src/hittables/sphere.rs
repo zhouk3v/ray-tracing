@@ -1,3 +1,5 @@
+use std::f64::consts::PI;
+
 use super::hittable::{HitRecord, Hittable};
 use crate::materials::material::Material;
 use crate::primitives::aabb::Aabb;
@@ -6,6 +8,10 @@ use crate::primitives::point3::Point3;
 use crate::primitives::ray::Ray;
 use crate::primitives::vec3::{dot, Vec3};
 
+struct SphereUV {
+    u: f64,
+    v: f64,
+}
 pub struct Sphere {
     center: Ray,
     radius: f64,
@@ -41,6 +47,16 @@ impl Sphere {
             bbox: Aabb::new_from_aabb(&box1, &box2),
         }
     }
+
+    fn get_sphere_uv(&self, p: &Point3) -> SphereUV {
+        let theta = (-p.y()).cos();
+        let phi = p.x().atan2(-p.z()) + PI;
+
+        SphereUV {
+            u: phi / (2.0 * PI),
+            v: theta / PI,
+        }
+    }
 }
 
 impl Hittable for Sphere {
@@ -66,12 +82,15 @@ impl Hittable for Sphere {
                     None
                 } else {
                     let outward_normal = (r.at(root) - current_center) / self.radius;
-                    let rec = HitRecord::new(root, r, outward_normal, self.mat.as_ref());
+                    let uv = self.get_sphere_uv(&outward_normal);
+                    let rec =
+                        HitRecord::new(root, r, outward_normal, self.mat.as_ref(), uv.u, uv.v);
                     Some(rec)
                 }
             } else {
                 let outward_normal = (r.at(root) - current_center) / self.radius;
-                let rec = HitRecord::new(root, r, outward_normal, self.mat.as_ref());
+                let uv = self.get_sphere_uv(&outward_normal);
+                let rec = HitRecord::new(root, r, outward_normal, self.mat.as_ref(), uv.u, uv.v);
                 Some(rec)
             }
         }
