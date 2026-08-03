@@ -49,8 +49,8 @@ impl Sphere {
     }
 
     fn get_sphere_uv(&self, p: &Point3) -> SphereUV {
-        let theta = (-p.y()).cos();
-        let phi = p.x().atan2(-p.z()) + PI;
+        let theta = (-p.y()).acos();
+        let phi = (-p.z()).atan2(p.x()) + PI;
 
         SphereUV {
             u: phi / (2.0 * PI),
