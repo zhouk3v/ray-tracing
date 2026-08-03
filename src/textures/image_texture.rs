@@ -1,4 +1,4 @@
-use image::{ImageError, ImageReader, Rgb32FImage};
+use image::{ImageError, ImageReader, RgbImage};
 
 use crate::primitives::color::Color;
 use crate::primitives::interval::Interval;
@@ -6,7 +6,7 @@ use crate::primitives::point3::Point3;
 use crate::textures::texture::Texture;
 
 pub struct ImageTexture {
-    image: Option<Rgb32FImage>,
+    image: Option<RgbImage>,
 }
 
 impl ImageTexture {
@@ -20,14 +20,14 @@ impl ImageTexture {
         }
     }
 
-    fn read_image(filename: &str) -> Result<Rgb32FImage, ImageError> {
+    fn read_image(filename: &str) -> Result<RgbImage, ImageError> {
         let image = ImageReader::open(filename)?.decode()?;
-        Ok(image.to_rgb32f())
+        Ok(image.to_rgb8())
     }
 }
 
 impl Texture for ImageTexture {
-    fn value(&self, u: f64, v: f64, p: &Point3) -> Color {
+    fn value(&self, u: f64, v: f64, _p: &Point3) -> Color {
         match &self.image {
             Some(image) => {
                 let u = Interval::new(0.0, 1.0).clamp(u);
