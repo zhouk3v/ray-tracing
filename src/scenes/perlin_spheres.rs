@@ -12,13 +12,17 @@ pub fn perlin_spheres() {
     world.add(Box::new(Sphere::new(
         Point3::new(0.0, -1000.0, 0.0),
         1000.0,
-        Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new()))),
+        Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new(
+            4.0,
+        )))),
     )));
 
     world.add(Box::new(Sphere::new(
         Point3::new(0.0, 2.0, 0.0),
         2.0,
-        Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new()))),
+        Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new(
+            4.0,
+        )))),
     )));
 
     let image_dim = ImageDimensions::new(16.0 / 9.0, 400.0);
