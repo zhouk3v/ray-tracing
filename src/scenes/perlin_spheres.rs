@@ -1,0 +1,35 @@
+use crate::camera::{Camera, CameraPosition, ImageDimensions};
+use crate::hittables::hittable_list::HittableList;
+use crate::hittables::sphere::Sphere;
+use crate::materials::lambertian::Lambertian;
+use crate::primitives::point3::Point3;
+use crate::primitives::vec3::Vec3;
+use crate::textures::noise_texture::NoiseTexture;
+
+pub fn perlin_spheres() {
+    let mut world = HittableList::new();
+
+    world.add(Box::new(Sphere::new(
+        Point3::new(0.0, -1000.0, 0.0),
+        1000.0,
+        Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new()))),
+    )));
+
+    world.add(Box::new(Sphere::new(
+        Point3::new(0.0, 2.0, 0.0),
+        2.0,
+        Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new()))),
+    )));
+
+    let image_dim = ImageDimensions::new(16.0 / 9.0, 400.0);
+
+    let cam_position = CameraPosition::new(
+        Point3::new(13.0, 2.0, 3.0),
+        Point3::new(0.0, 0.0, 0.0),
+        Vec3::new(0.0, 1.0, 0.0),
+    );
+
+    let cam = Camera::new(image_dim, 100, 50, 20.0, cam_position, 0.0, 10.0);
+
+    cam.render(&world);
+}
