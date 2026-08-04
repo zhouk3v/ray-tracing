@@ -3,19 +3,20 @@ use ray_tracing::scenes::checkered_spheres::checkered_spheres;
 use ray_tracing::scenes::earth::earth;
 use ray_tracing::scenes::perlin_spheres::perlin_spheres;
 
+#[allow(dead_code)]
 enum Scene {
-    BOUNCING,
-    CHECKERED,
-    EARTH,
-    PERLIN,
+    Bouncing,
+    Checkered,
+    Earth,
+    Perlin,
 }
 
 fn main() {
-    let scene = Scene::PERLIN;
+    let scene = Scene::Perlin;
     match scene {
-        Scene::BOUNCING => bouncing_spheres(),
-        Scene::CHECKERED => checkered_spheres(),
-        Scene::EARTH => earth(),
-        Scene::PERLIN => perlin_spheres(),
+        Scene::Bouncing => bouncing_spheres(),
+        Scene::Checkered => checkered_spheres(),
+        Scene::Earth => earth(),
+        Scene::Perlin => perlin_spheres(),
     }
 }
