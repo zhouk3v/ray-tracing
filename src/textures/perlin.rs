@@ -30,9 +30,13 @@ impl Perlin {
         // let index = self.perm_x[i as usize] ^ self.perm_y[j as usize] ^ self.perm_z[k as usize];
 
         // self.randfloat[index as usize]
-        let u = p.x() - p.x().floor();
-        let v = p.y() - p.y().floor();
-        let w = p.z() - p.z().floor();
+        let u_base = p.x() - p.x().floor();
+        let v_base = p.y() - p.y().floor();
+        let w_base = p.z() - p.z().floor();
+
+        let u = u_base * u_base * (3.0 - 2.0 * u_base);
+        let v = v_base * v_base * (3.0 - 2.0 * v_base);
+        let w = w_base * w_base * (3.0 - 2.0 * w_base);
 
         let i = p.x().floor() as i32;
         let j = p.y().floor() as i32;
