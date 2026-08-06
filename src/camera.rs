@@ -6,8 +6,8 @@ use crate::primitives::ray::Ray;
 use crate::primitives::vec3::{cross, random_in_unit_disk, unit_vector, Vec3};
 
 pub struct ImageDimensions {
-    aspect_ratio: f64,
-    image_width: f64,
+    aspect_ratio: f64, // Ratio of image width over height
+    image_width: f64,  // Rendered image width in pixel count
 }
 
 impl ImageDimensions {
@@ -15,6 +15,22 @@ impl ImageDimensions {
         Self {
             aspect_ratio,
             image_width,
+        }
+    }
+}
+
+pub struct CameraPerformace {
+    samples_per_pixel: i32, // Count of random samples for each pixel
+    max_depth: u32,         // Maximum number of ray bounces into scene
+    vfov: f64,              // Vertical view angle (field of view)
+}
+
+impl CameraPerformace {
+    pub fn new(samples_per_pixel: i32, max_depth: u32, vfov: f64) -> Self {
+        Self {
+            samples_per_pixel,
+            max_depth,
+            vfov,
         }
     }
 }
@@ -31,6 +47,20 @@ impl CameraPosition {
             lookfrom,
             lookat,
             vup,
+        }
+    }
+}
+
+pub struct CameraFocus {
+    defocus_angle: f64, // Variation angle of rays through each pixel
+    focus_dist: f64,    // Distance from camera lookfrom point to plane of perfect focus
+}
+
+impl CameraFocus {
+    pub fn new(defocus_angle: f64, focus_dist: f64) -> Self {
+        Self {
+            defocus_angle,
+            focus_dist,
         }
     }
 }
@@ -53,23 +83,25 @@ pub struct Camera {
 impl Camera {
     pub fn new(
         image_dimensions: ImageDimensions,
-        samples_per_pixel: i32,
-        max_depth: u32,
-        vfov: f64,                // Vertical view angle (field of view)
-        position: CameraPosition, // Position of camera
-        defocus_angle: f64,       // Variation angle of rays through each pixel
-        focus_dist: f64,          // Distance from camera lookfrom point to plane of perfect focus
+        camera_performance: CameraPerformace,
+        position: CameraPosition,
+        focus: CameraFocus,
     ) -> Self {
         let image_width = image_dimensions.image_width;
         let aspect_ratio = image_dimensions.aspect_ratio;
+        let center = position.lookfrom;
+        let vfov = camera_performance.vfov;
+        let samples_per_pixel = camera_performance.samples_per_pixel;
+        let max_depth = camera_performance.max_depth;
+        let defocus_angle = focus.defocus_angle;
+        let focus_dist = focus.focus_dist;
+
         let mut image_height = image_width / aspect_ratio;
         image_height = if image_height < 1.0 {
             1.0
         } else {
             image_height
         };
-
-        let center = position.lookfrom;
 
         // Determine viewport dimensions
         let theta = vfov.to_radians();
