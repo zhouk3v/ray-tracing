@@ -1,4 +1,4 @@
-use crate::camera::{Camera, CameraFocus, CameraPerformace, CameraPosition, ImageDimensions};
+use crate::camera::{Camera, CameraFocus, CameraPerformance, CameraPosition, ImageDimensions};
 use crate::hittables::hittable_list::HittableList;
 use crate::hittables::quad::Quad;
 use crate::materials::lambertian::Lambertian;
@@ -50,12 +50,13 @@ pub fn quads() {
 
     let image_dim = ImageDimensions::new(1.0, 400.0);
 
-    let cam_performance = CameraPerformace::new(100, 50, 20.0);
+    let cam_performance = CameraPerformance::new(100, 50);
 
     let cam_position = CameraPosition::new(
         Point3::new(0.0, 0.0, 9.0),
         Point3::new(0.0, 0.0, 0.0),
         Vec3::new(0.0, 1.0, 0.0),
+        20.0,
     );
 
     let cam_focus = CameraFocus::new(0.0, 10.0);

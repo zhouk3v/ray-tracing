@@ -19,18 +19,16 @@ impl ImageDimensions {
     }
 }
 
-pub struct CameraPerformace {
+pub struct CameraPerformance {
     samples_per_pixel: i32, // Count of random samples for each pixel
     max_depth: u32,         // Maximum number of ray bounces into scene
-    vfov: f64,              // Vertical view angle (field of view)
 }
 
-impl CameraPerformace {
-    pub fn new(samples_per_pixel: i32, max_depth: u32, vfov: f64) -> Self {
+impl CameraPerformance {
+    pub fn new(samples_per_pixel: i32, max_depth: u32) -> Self {
         Self {
             samples_per_pixel,
             max_depth,
-            vfov,
         }
     }
 }
@@ -39,14 +37,16 @@ pub struct CameraPosition {
     lookfrom: Point3, // Point camera is looking from
     lookat: Point3,   // Point camera is looking at
     vup: Vec3,        // Camera-relative "up" direction
+    vfov: f64,        // Vertical view angle (field of view)
 }
 
 impl CameraPosition {
-    pub fn new(lookfrom: Point3, lookat: Point3, vup: Vec3) -> Self {
+    pub fn new(lookfrom: Point3, lookat: Point3, vup: Vec3, vfov: f64) -> Self {
         CameraPosition {
             lookfrom,
             lookat,
             vup,
+            vfov,
         }
     }
 }
@@ -83,14 +83,14 @@ pub struct Camera {
 impl Camera {
     pub fn new(
         image_dimensions: ImageDimensions,
-        camera_performance: CameraPerformace,
+        camera_performance: CameraPerformance,
         position: CameraPosition,
         focus: CameraFocus,
     ) -> Self {
         let image_width = image_dimensions.image_width;
         let aspect_ratio = image_dimensions.aspect_ratio;
         let center = position.lookfrom;
-        let vfov = camera_performance.vfov;
+        let vfov = position.vfov;
         let samples_per_pixel = camera_performance.samples_per_pixel;
         let max_depth = camera_performance.max_depth;
         let defocus_angle = focus.defocus_angle;
