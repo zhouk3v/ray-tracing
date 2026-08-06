@@ -56,7 +56,7 @@ pub fn quads() {
         Point3::new(0.0, 0.0, 9.0),
         Point3::new(0.0, 0.0, 0.0),
         Vec3::new(0.0, 1.0, 0.0),
-        20.0,
+        80.0,
     );
 
     let cam_focus = CameraFocus::new(0.0, 10.0);
