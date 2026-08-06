@@ -2,6 +2,7 @@ use crate::camera::{Camera, CameraFocus, CameraPerformance, CameraPosition, Imag
 use crate::hittables::hittable_list::HittableList;
 use crate::hittables::sphere::Sphere;
 use crate::materials::lambertian::Lambertian;
+use crate::primitives::color::Color;
 use crate::primitives::point3::Point3;
 use crate::primitives::vec3::Vec3;
 use crate::textures::image_texture::ImageTexture;
@@ -29,7 +30,15 @@ pub fn earth() {
 
     let cam_focus = CameraFocus::new(0.6, 10.0);
 
-    let cam = Camera::new(image_dim, cam_performance, cam_position, cam_focus);
+    let cam_background = Color::new(0.7, 0.8, 1.0);
+
+    let cam = Camera::new(
+        image_dim,
+        cam_performance,
+        cam_position,
+        cam_focus,
+        cam_background,
+    );
 
     cam.render(&world);
 }

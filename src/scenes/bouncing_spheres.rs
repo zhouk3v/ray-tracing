@@ -106,7 +106,15 @@ pub fn bouncing_spheres() {
 
     let cam_focus = CameraFocus::new(0.6, 10.0);
 
-    let cam = Camera::new(image_dim, cam_performance, cam_position, cam_focus);
+    let cam_background = Color::new(0.7, 0.8, 1.0);
+
+    let cam = Camera::new(
+        image_dim,
+        cam_performance,
+        cam_position,
+        cam_focus,
+        cam_background,
+    );
 
     cam.render(&world);
 }

@@ -75,9 +75,10 @@ pub struct Camera {
     pixel_delta_v: Vec3,      // Offset to pixel below
     pixel_samples_scale: f64, // Color scale factor for a sum of pixel samples
     max_depth: u32,           // Maximum number of ray bounces into scene
-    defocus_angle: f64,
-    defocus_disk_u: Vec3, // Defocus disk horizontal radius
-    defocus_disk_v: Vec3, // Defocus disk vertical radius
+    defocus_angle: f64,       // Variation angle of rays through each pixel
+    defocus_disk_u: Vec3,     // Defocus disk horizontal radius
+    defocus_disk_v: Vec3,     // Defocus disk vertical radius
+    background: Color,        // Scene background color
 }
 
 impl Camera {
@@ -86,6 +87,7 @@ impl Camera {
         camera_performance: CameraPerformance,
         position: CameraPosition,
         focus: CameraFocus,
+        background: Color,
     ) -> Self {
         let image_width = image_dimensions.image_width;
         let aspect_ratio = image_dimensions.aspect_ratio;
@@ -146,6 +148,7 @@ impl Camera {
             defocus_angle,
             defocus_disk_u,
             defocus_disk_v,
+            background,
         }
     }
 
@@ -212,15 +215,17 @@ impl Camera {
         if depth == 0 {
             Color::new(0.0, 0.0, 0.0)
         } else if let Some(rec) = world.hit(r, &Interval::new(0.001, f64::INFINITY)) {
+            let color_from_emission = rec.mat.emitted(rec.u, rec.v, &rec.p);
             if let Some(scatter) = rec.mat.scatter(r, &rec) {
-                scatter.attenuation * self.ray_color(&scatter.scattered, depth - 1, world)
+                let color_from_scatter =
+                    scatter.attenuation * self.ray_color(&scatter.scattered, depth - 1, world);
+                color_from_emission + color_from_scatter
             } else {
-                Color::new(0.0, 0.0, 0.0)
+                color_from_emission
             }
         } else {
-            let unit_direction = unit_vector(*r.direction());
-            let a = 0.5 * (unit_direction.y() + 1.0);
-            (1.0 - a) * Color::new(1.0, 1.0, 1.0) + a * Color::new(0.5, 0.7, 1.0)
+            // If ray hits nothing, return the background color
+            self.background
         }
     }
 }
