@@ -1,0 +1,6 @@
+{
+  "rust-analyzer.completion.autoimport.enable": true,
+  "rust-analyzer.imports.granularity.group": "crate",
+  "rust-analyzer.imports.prefix": "plain",
+  "rust-analyzer.imports.merge.glob": false
+}
