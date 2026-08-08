@@ -1,4 +1,5 @@
 use crate::camera::{Camera, CameraFocus, CameraPerformance, CameraPosition, ImageDimensions};
+use crate::hittables::box_object::{BoxInstance, BoxInstanceSideMaterials};
 use crate::hittables::bvh_node::BVHNode;
 use crate::hittables::hittable_list::HittableList;
 use crate::hittables::quad::Quad;
@@ -52,6 +53,32 @@ pub fn cornell_box() {
         Vec3::new(555.0, 0.0, 0.0),
         Vec3::new(0.0, 555.0, 0.0),
         white,
+    )));
+
+    objects.add(Box::new(BoxInstance::new(
+        &Point3::new(130.0, 0.0, 65.0),
+        &Point3::new(295.0, 165.0, 230.0),
+        BoxInstanceSideMaterials::new(
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+        ),
+    )));
+
+    objects.add(Box::new(BoxInstance::new(
+        &Point3::new(265.0, 0.0, 295.0),
+        &Point3::new(430.0, 330.0, 460.0),
+        BoxInstanceSideMaterials::new(
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+        ),
     )));
 
     let mut world = HittableList::new();
