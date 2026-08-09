@@ -7,9 +7,9 @@ use super::vec3::Vec3;
 
 #[derive(Default, Clone, Copy)]
 pub struct Aabb {
-    x: Interval,
-    y: Interval,
-    z: Interval,
+    pub x: Interval,
+    pub y: Interval,
+    pub z: Interval,
 }
 
 impl Aabb {
