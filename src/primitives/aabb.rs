@@ -1,8 +1,11 @@
+use std::ops::Add;
+
 use super::interval::Interval;
 use super::point3::Point3;
 use super::ray::Ray;
+use super::vec3::Vec3;
 
-#[derive(Default)]
+#[derive(Default, Clone, Copy)]
 pub struct Aabb {
     x: Interval,
     y: Interval,
@@ -128,5 +131,25 @@ impl Aabb {
         } else {
             i
         }
+    }
+}
+
+impl Add<Vec3> for Aabb {
+    type Output = Aabb;
+
+    fn add(self, rhs: Vec3) -> Aabb {
+        Aabb {
+            x: self.x + rhs.x(),
+            y: self.y + rhs.y(),
+            z: self.z + rhs.z(),
+        }
+    }
+}
+
+impl Add<Aabb> for Vec3 {
+    type Output = Aabb;
+
+    fn add(self, rhs: Aabb) -> Self::Output {
+        rhs + self
     }
 }
