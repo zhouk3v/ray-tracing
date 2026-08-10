@@ -1,5 +1,6 @@
 pub mod box_object;
 pub mod bvh_node;
+pub mod constant_medium;
 pub mod hittable;
 pub mod hittable_list;
 pub mod quad;
