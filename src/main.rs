@@ -1,6 +1,7 @@
 use ray_tracing::scenes::bouncing_spheres::bouncing_spheres;
 use ray_tracing::scenes::checkered_spheres::checkered_spheres;
 use ray_tracing::scenes::cornell_box::cornell_box;
+use ray_tracing::scenes::cornell_smoke::cornell_smoke;
 use ray_tracing::scenes::earth::earth;
 use ray_tracing::scenes::perlin_spheres::perlin_spheres;
 use ray_tracing::scenes::quads::quads;
@@ -11,6 +12,7 @@ enum Scene {
     Bouncing,
     Checkered,
     CornellBox,
+    CornellSmoke,
     Earth,
     Perlin,
     Quads,
@@ -18,11 +20,12 @@ enum Scene {
 }
 
 fn main() {
-    let scene = Scene::CornellBox;
+    let scene = Scene::CornellSmoke;
     match scene {
         Scene::Bouncing => bouncing_spheres(),
         Scene::Checkered => checkered_spheres(),
         Scene::CornellBox => cornell_box(),
+        Scene::CornellSmoke => cornell_smoke(),
         Scene::Earth => earth(),
         Scene::Perlin => perlin_spheres(),
         Scene::Quads => quads(),
