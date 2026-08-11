@@ -23,7 +23,7 @@ enum Scene {
 }
 
 fn main() {
-    let scene = Scene::Final;
+    let scene = Scene::FinalHD;
     match scene {
         Scene::Bouncing => bouncing_spheres(),
         Scene::Checkered => checkered_spheres(),
