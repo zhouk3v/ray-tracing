@@ -65,7 +65,7 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
     // Moving Sphere
     let center1 = Point3::new(400.0, 400.0, 200.0);
     let center2 = center1 + Vec3::new(30.0, 0.0, 0.0);
-    let sphere_material = Box::new(Lambertian::new(Color::new(0.7, 0.3, 0.1)));
+    let sphere_material = Lambertian::new(Color::new(0.7, 0.3, 0.1));
     world.add(Box::new(Sphere::new_moving(
         center1,
         center2,
@@ -77,39 +77,31 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
     world.add(Box::new(Sphere::new(
         Point3::new(260.0, 150.0, 45.0),
         50.0,
-        Box::new(Dielectric::new(1.5)),
+        Dielectric::new(1.5),
     )));
 
     // Metal Sphere
     world.add(Box::new(Sphere::new(
         Point3::new(0.0, 150.0, 145.0),
         50.0,
-        Box::new(Metal::new(Color::new(0.8, 0.8, 0.9), 1.0)),
+        Metal::new(Color::new(0.8, 0.8, 0.9), 1.0),
     )));
 
     // Blue subsurface reflection sphere
     let boundary = Box::new(Sphere::new(
         Point3::new(360.0, 150.0, 145.0),
         70.0,
-        Box::new(Dielectric::new(1.5)),
+        Dielectric::new(1.5),
     ));
     world.add(boundary);
     world.add(Box::new(ConstantMedium::new(
-        Sphere::new(
-            Point3::new(360.0, 150.0, 145.0),
-            70.0,
-            Box::new(Dielectric::new(1.5)),
-        ),
+        Sphere::new(Point3::new(360.0, 150.0, 145.0), 70.0, Dielectric::new(1.5)),
         0.2,
         Color::new(0.2, 0.4, 0.9),
     )));
 
     // Fog
-    let boundary = Sphere::new(
-        Point3::new(0.0, 0.0, 0.0),
-        5000.0,
-        Box::new(Dielectric::new(1.5)),
-    );
+    let boundary = Sphere::new(Point3::new(0.0, 0.0, 0.0), 5000.0, Dielectric::new(1.5));
     world.add(Box::new(ConstantMedium::new(
         boundary,
         0.0001,
@@ -118,7 +110,7 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
 
     // Earth
     let earth_texture = ImageTexture::new("assets/earthmap.jpg");
-    let earth_surface = Box::new(Lambertian::new_with_texture(earth_texture));
+    let earth_surface = Lambertian::new_with_texture(earth_texture);
     world.add(Box::new(Sphere::new(
         Point3::new(400.0, 200.0, 400.0),
         100.0,
@@ -126,7 +118,7 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
     )));
 
     // Perlin Noise Sphere
-    let pertext = Box::new(Lambertian::new_with_texture(NoiseTexture::new(0.2)));
+    let pertext = Lambertian::new_with_texture(NoiseTexture::new(0.2));
     world.add(Box::new(Sphere::new(
         Point3::new(220.0, 280.0, 300.0),
         80.0,
@@ -137,7 +129,7 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
     let mut boxes2 = HittableList::new();
     let ns = 1000;
     for _ in 0..ns {
-        let white = Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73)));
+        let white = Lambertian::new(Color::new(0.73, 0.73, 0.73));
         boxes2.add(Box::new(Sphere::new(
             Point3::random_with_min_max(0.0, 165.0),
             10.0,

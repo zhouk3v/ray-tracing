@@ -19,7 +19,7 @@ pub fn bouncing_spheres() {
     objects.add(Box::new(Sphere::new(
         Point3::new(0.0, -1000.0, 0.0),
         1000.0,
-        Box::new(ground_material),
+        ground_material,
     )));
 
     for a in -11..11 {
@@ -41,26 +41,18 @@ pub fn bouncing_spheres() {
                         center,
                         center2,
                         0.2,
-                        Box::new(sphere_material),
+                        sphere_material,
                     )));
                 } else if choose_mat < 0.95 {
                     // Metal
                     let albedo = Color::random_with_min_max(0.5, 1.0);
                     let fuzz = rand::random_range(0.0..0.5);
                     let sphere_material = Metal::new(albedo, fuzz);
-                    objects.add(Box::new(Sphere::new(
-                        center,
-                        0.2,
-                        Box::new(sphere_material),
-                    )));
+                    objects.add(Box::new(Sphere::new(center, 0.2, sphere_material)));
                 } else {
                     // glass
                     let sphere_material = Dielectric::new(1.5);
-                    objects.add(Box::new(Sphere::new(
-                        center,
-                        0.2,
-                        Box::new(sphere_material),
-                    )));
+                    objects.add(Box::new(Sphere::new(center, 0.2, sphere_material)));
                 }
             }
         }
@@ -70,21 +62,21 @@ pub fn bouncing_spheres() {
     objects.add(Box::new(Sphere::new(
         Point3::new(0.0, 1.0, 0.0),
         1.0,
-        Box::new(material1),
+        material1,
     )));
 
     let material2 = Lambertian::new(Color::new(0.4, 0.2, 0.1));
     objects.add(Box::new(Sphere::new(
         Point3::new(-4.0, 1.0, 0.0),
         1.0,
-        Box::new(material2),
+        material2,
     )));
 
     let material3 = Metal::new(Color::new(0.7, 0.6, 0.5), 0.0);
     objects.add(Box::new(Sphere::new(
         Point3::new(4.0, 1.0, 0.0),
         1.0,
-        Box::new(material3),
+        material3,
     )));
 
     let mut world = HittableList::new();

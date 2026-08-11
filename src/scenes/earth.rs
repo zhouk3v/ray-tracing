@@ -10,7 +10,7 @@ use crate::textures::image_texture::ImageTexture;
 pub fn earth() {
     let earth_texture = ImageTexture::new("assets/earthmap.jpg");
 
-    let earth_surface = Box::new(Lambertian::new_with_texture(earth_texture));
+    let earth_surface = Lambertian::new_with_texture(earth_texture);
 
     let globe = Box::new(Sphere::new(Point3::new(0.0, 0.0, 0.0), 2.0, earth_surface));
 

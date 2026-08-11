@@ -14,24 +14,20 @@ pub fn checkered_spheres() {
     objects.add(Box::new(Sphere::new(
         Point3::new(0.0, -10.0, 0.0),
         10.0,
-        Box::new(Lambertian::new_with_texture(
-            CheckerTexture::new_with_color(
-                0.32,
-                Color::new(0.2, 0.3, 0.1),
-                Color::new(0.9, 0.9, 0.9),
-            ),
+        Lambertian::new_with_texture(CheckerTexture::new_with_color(
+            0.32,
+            Color::new(0.2, 0.3, 0.1),
+            Color::new(0.9, 0.9, 0.9),
         )),
     )));
 
     objects.add(Box::new(Sphere::new(
         Point3::new(0.0, 10.0, 0.0),
         10.0,
-        Box::new(Lambertian::new_with_texture(
-            CheckerTexture::new_with_color(
-                0.32,
-                Color::new(0.2, 0.3, 0.1),
-                Color::new(0.9, 0.9, 0.9),
-            ),
+        Lambertian::new_with_texture(CheckerTexture::new_with_color(
+            0.32,
+            Color::new(0.2, 0.3, 0.1),
+            Color::new(0.9, 0.9, 0.9),
         )),
     )));
 
