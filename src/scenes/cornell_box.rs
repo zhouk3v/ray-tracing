@@ -57,7 +57,7 @@ pub fn cornell_box() {
         white,
     )));
 
-    let box1 = Box::new(BoxInstance::new(
+    let box1 = BoxInstance::new(
         &Point3::new(0.0, 0.0, 0.0),
         &Point3::new(165.0, 330.0, 165.0),
         BoxInstanceSideMaterials::new(
@@ -68,14 +68,14 @@ pub fn cornell_box() {
             Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
             Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
         ),
-    ));
+    );
 
-    let box1 = Box::new(RotateY::new(box1, 15.0));
+    let box1 = RotateY::new(box1, 15.0);
     let box1 = Box::new(Translate::new(box1, Vec3::new(265.0, 0.0, 295.0)));
 
     objects.add(box1);
 
-    let box2 = Box::new(BoxInstance::new(
+    let box2 = BoxInstance::new(
         &Point3::new(0.0, 0.0, 0.0),
         &Point3::new(165.0, 165.0, 165.0),
         BoxInstanceSideMaterials::new(
@@ -86,9 +86,9 @@ pub fn cornell_box() {
             Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
             Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
         ),
-    ));
+    );
 
-    let box2 = Box::new(RotateY::new(box2, -18.0));
+    let box2 = RotateY::new(box2, -18.0);
     let box2 = Box::new(Translate::new(box2, Vec3::new(130.0, 0.0, 65.0)));
 
     objects.add(box2);

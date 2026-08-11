@@ -7,23 +7,23 @@ use crate::primitives::interval::Interval;
 use crate::primitives::ray::Ray;
 use crate::primitives::vec3::Vec3;
 
-pub struct ConstantMedium {
-    boundary: Box<dyn Hittable>,
+pub struct ConstantMedium<T: Hittable> {
+    boundary: T,
     neg_inv_density: f64,
-    phase_function: Box<Isotropic>,
+    phase_function: Isotropic,
 }
 
-impl ConstantMedium {
-    pub fn new(boundary: Box<dyn Hittable>, density: f64, albedo: Color) -> Self {
+impl<T: Hittable> ConstantMedium<T> {
+    pub fn new(boundary: T, density: f64, albedo: Color) -> Self {
         Self {
             boundary,
             neg_inv_density: -1.0 / density,
-            phase_function: Box::new(Isotropic::new(albedo)),
+            phase_function: Isotropic::new(albedo),
         }
     }
 }
 
-impl Hittable for ConstantMedium {
+impl<T: Hittable> Hittable for ConstantMedium<T> {
     fn bounding_box(&self) -> &Aabb {
         self.boundary.bounding_box()
     }
@@ -59,10 +59,10 @@ impl Hittable for ConstantMedium {
                         Some(HitRecord::new(
                             rec1.t + hit_distance / ray_length,
                             r,
-                            Vec3::new(1.0, 0.0, 0.0),     // arbitrary
-                            self.phase_function.as_ref(), // also arbitrary
-                            0.0,                          // also arbitrary
-                            0.0,                          // also arbitrary
+                            Vec3::new(1.0, 0.0, 0.0), // arbitrary
+                            &self.phase_function,
+                            0.0, // also arbitrary
+                            0.0, // also arbitrary
                         ))
                     }
                 }

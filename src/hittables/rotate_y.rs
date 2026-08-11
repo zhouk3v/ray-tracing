@@ -5,15 +5,15 @@ use crate::primitives::point3::Point3;
 use crate::primitives::ray::Ray;
 use crate::primitives::vec3::Vec3;
 
-pub struct RotateY {
-    object: Box<dyn Hittable>,
+pub struct RotateY<T: Hittable> {
+    object: T,
     sin_theta: f64,
     cos_theta: f64,
     bbox: Aabb,
 }
 
-impl RotateY {
-    pub fn new(object: Box<dyn Hittable>, angle: f64) -> Self {
+impl<T: Hittable> RotateY<T> {
+    pub fn new(object: T, angle: f64) -> Self {
         let radians = angle.to_radians();
 
         let sin_theta = radians.sin();
@@ -61,7 +61,7 @@ impl RotateY {
     }
 }
 
-impl Hittable for RotateY {
+impl<T: Hittable> Hittable for RotateY<T> {
     fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord<'_>> {
         // Transform the ray from world space to object space
         let origin = Point3::new(

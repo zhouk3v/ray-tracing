@@ -4,14 +4,14 @@ use crate::primitives::interval::Interval;
 use crate::primitives::ray::Ray;
 use crate::primitives::vec3::Vec3;
 
-pub struct Translate {
-    object: Box<dyn Hittable>,
+pub struct Translate<T: Hittable> {
+    object: T,
     offset: Vec3,
     bbox: Aabb,
 }
 
-impl Translate {
-    pub fn new(object: Box<dyn Hittable>, offset: Vec3) -> Self {
+impl<T: Hittable> Translate<T> {
+    pub fn new(object: T, offset: Vec3) -> Self {
         let bbox = *object.bounding_box() + offset;
         Self {
             object,
@@ -21,7 +21,7 @@ impl Translate {
     }
 }
 
-impl Hittable for Translate {
+impl<T: Hittable> Hittable for Translate<T> {
     fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord<'_>> {
         let offset_r = Ray::new(*r.origin() - self.offset, *r.direction(), r.time());
 

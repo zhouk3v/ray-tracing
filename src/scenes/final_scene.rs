@@ -95,21 +95,21 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
     ));
     world.add(boundary);
     world.add(Box::new(ConstantMedium::new(
-        Box::new(Sphere::new(
+        Sphere::new(
             Point3::new(360.0, 150.0, 145.0),
             70.0,
             Box::new(Dielectric::new(1.5)),
-        )),
+        ),
         0.2,
         Color::new(0.2, 0.4, 0.9),
     )));
 
     // Fog
-    let boundary = Box::new(Sphere::new(
+    let boundary = Sphere::new(
         Point3::new(0.0, 0.0, 0.0),
         5000.0,
         Box::new(Dielectric::new(1.5)),
-    ));
+    );
     world.add(Box::new(ConstantMedium::new(
         boundary,
         0.0001,
@@ -145,7 +145,7 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
         )))
     }
     world.add(Box::new(Translate::new(
-        Box::new(RotateY::new(Box::new(BVHNode::new(boxes2)), 15.0)),
+        RotateY::new(BVHNode::new(boxes2), 15.0),
         Vec3::new(-100.0, 270.0, 395.0),
     )));
 
