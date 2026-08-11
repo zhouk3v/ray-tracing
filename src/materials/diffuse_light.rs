@@ -1,6 +1,7 @@
 use super::material::{Material, ScatterRes};
 use crate::hittables::hittable::HitRecord;
 use crate::primitives::color::Color;
+use crate::primitives::point3::Point3;
 use crate::primitives::ray::Ray;
 use crate::textures::solid_color::SolidColor;
 use crate::textures::texture::Texture;
@@ -28,7 +29,7 @@ impl<T: Texture> Material for DiffuseLight<T> {
         None
     }
 
-    fn emitted(&self, u: f64, v: f64, p: &crate::primitives::point3::Point3) -> Color {
+    fn emitted(&self, u: f64, v: f64, p: &Point3) -> Color {
         self.tex.value(u, v, p)
     }
 }
