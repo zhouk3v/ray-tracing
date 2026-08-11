@@ -33,12 +33,12 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
             let z1 = z0 + w;
 
             let ground = BoxInstanceSideMaterials::new(
-                Box::new(Lambertian::new(Color::new(0.48, 0.83, 0.53))),
-                Box::new(Lambertian::new(Color::new(0.48, 0.83, 0.53))),
-                Box::new(Lambertian::new(Color::new(0.48, 0.83, 0.53))),
-                Box::new(Lambertian::new(Color::new(0.48, 0.83, 0.53))),
-                Box::new(Lambertian::new(Color::new(0.48, 0.83, 0.53))),
-                Box::new(Lambertian::new(Color::new(0.48, 0.83, 0.53))),
+                Lambertian::new(Color::new(0.48, 0.83, 0.53)),
+                Lambertian::new(Color::new(0.48, 0.83, 0.53)),
+                Lambertian::new(Color::new(0.48, 0.83, 0.53)),
+                Lambertian::new(Color::new(0.48, 0.83, 0.53)),
+                Lambertian::new(Color::new(0.48, 0.83, 0.53)),
+                Lambertian::new(Color::new(0.48, 0.83, 0.53)),
             );
 
             boxes1.add(Box::new(BoxInstance::new(
@@ -54,7 +54,7 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
     world.add(Box::new(BVHNode::new(boxes1)));
 
     // Light
-    let light = Box::new(DiffuseLight::new_from_color(Color::new(7.0, 7.0, 7.0)));
+    let light = DiffuseLight::new_from_color(Color::new(7.0, 7.0, 7.0));
     world.add(Box::new(Quad::new(
         Point3::new(123.0, 554.0, 147.0),
         Vec3::new(300.0, 0.0, 0.0),

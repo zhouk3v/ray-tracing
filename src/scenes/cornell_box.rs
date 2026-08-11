@@ -14,42 +14,42 @@ use crate::primitives::vec3::Vec3;
 pub fn cornell_box() {
     let mut objects = HittableList::new();
 
-    let green = Box::new(Lambertian::new(Color::new(0.12, 0.45, 0.15)));
+    let green = Lambertian::new(Color::new(0.12, 0.45, 0.15));
     objects.add(Box::new(Quad::new(
         Point3::new(555.0, 0.0, 0.0),
         Vec3::new(0.0, 555.0, 0.0),
         Vec3::new(0.0, 0.0, 555.0),
         green,
     )));
-    let red = Box::new(Lambertian::new(Color::new(0.65, 0.05, 0.05)));
+    let red = Lambertian::new(Color::new(0.65, 0.05, 0.05));
     objects.add(Box::new(Quad::new(
         Point3::new(0.0, 0.0, 0.0),
         Vec3::new(0.0, 555.0, 0.0),
         Vec3::new(0.0, 0.0, 555.0),
         red,
     )));
-    let light = Box::new(DiffuseLight::new_from_color(Color::new(15.0, 15.0, 15.0)));
+    let light = DiffuseLight::new_from_color(Color::new(15.0, 15.0, 15.0));
     objects.add(Box::new(Quad::new(
         Point3::new(343.0, 554.0, 332.0),
         Vec3::new(-130.0, 0.0, 0.0),
         Vec3::new(0.0, 0.0, -105.0),
         light,
     )));
-    let white = Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73)));
+    let white = Lambertian::new(Color::new(0.73, 0.73, 0.73));
     objects.add(Box::new(Quad::new(
         Point3::new(0.0, 0.0, 0.0),
         Vec3::new(555.0, 0.0, 0.0),
         Vec3::new(0.0, 0.0, 555.0),
         white,
     )));
-    let white = Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73)));
+    let white = Lambertian::new(Color::new(0.73, 0.73, 0.73));
     objects.add(Box::new(Quad::new(
         Point3::new(555.0, 555.0, 555.0),
         Vec3::new(-555.0, 0.0, 0.0),
         Vec3::new(0.0, 0.0, -555.0),
         white,
     )));
-    let white = Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73)));
+    let white = Lambertian::new(Color::new(0.73, 0.73, 0.73));
     objects.add(Box::new(Quad::new(
         Point3::new(0.0, 0.0, 555.0),
         Vec3::new(555.0, 0.0, 0.0),
@@ -61,12 +61,12 @@ pub fn cornell_box() {
         &Point3::new(0.0, 0.0, 0.0),
         &Point3::new(165.0, 330.0, 165.0),
         BoxInstanceSideMaterials::new(
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
         ),
     );
 
@@ -79,12 +79,12 @@ pub fn cornell_box() {
         &Point3::new(0.0, 0.0, 0.0),
         &Point3::new(165.0, 165.0, 165.0),
         BoxInstanceSideMaterials::new(
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
-            Box::new(Lambertian::new(Color::new(0.73, 0.73, 0.73))),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
+            Lambertian::new(Color::new(0.73, 0.73, 0.73)),
         ),
     );
 

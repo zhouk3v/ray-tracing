@@ -11,19 +11,19 @@ struct QuadUV {
     v: f64,
 }
 
-pub struct Quad {
+pub struct Quad<T: Material> {
     q: Point3,
     u: Vec3,
     v: Vec3,
     w: Vec3,
-    mat: Box<dyn Material>,
+    mat: T,
     bbox: Aabb,
     normal: Vec3,
     d: f64,
 }
 
-impl Quad {
-    pub fn new(q: Point3, u: Vec3, v: Vec3, mat: Box<dyn Material>) -> Self {
+impl<T: Material> Quad<T> {
+    pub fn new(q: Point3, u: Vec3, v: Vec3, mat: T) -> Self {
         let bbox_diagonal1 = Aabb::new_from_points(&q, &(q + u + v));
         let bbox_diagonal2 = Aabb::new_from_points(&(q + u), &(q + v));
         let n = cross(&u, &v);
@@ -53,7 +53,7 @@ impl Quad {
     }
 }
 
-impl Hittable for Quad {
+impl<T: Material> Hittable for Quad<T> {
     fn bounding_box(&self) -> &Aabb {
         &self.bbox
     }
@@ -78,7 +78,7 @@ impl Hittable for Quad {
 
                 if let Some(uv) = self.is_interior(alpha, beta) {
                     // Ray hits the 2D shape; set the rest of the hit record and return true.
-                    let rec = HitRecord::new(t, r, self.normal, self.mat.as_ref(), uv.u, uv.v);
+                    let rec = HitRecord::new(t, r, self.normal, &self.mat, uv.u, uv.v);
                     Some(rec)
                 } else {
                     None

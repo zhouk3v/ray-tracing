@@ -10,11 +10,11 @@ pub fn quads() {
     let mut world = HittableList::new();
 
     // Materials
-    let left_red = Box::new(Lambertian::new(Color::new(1.0, 0.2, 0.2)));
-    let back_green = Box::new(Lambertian::new(Color::new(0.2, 1.0, 0.2)));
-    let right_blue = Box::new(Lambertian::new(Color::new(0.2, 0.2, 1.0)));
-    let upper_orange = Box::new(Lambertian::new(Color::new(1.0, 0.5, 0.0)));
-    let lower_teal = Box::new(Lambertian::new(Color::new(0.2, 0.8, 0.8)));
+    let left_red = Lambertian::new(Color::new(1.0, 0.2, 0.2));
+    let back_green = Lambertian::new(Color::new(0.2, 1.0, 0.2));
+    let right_blue = Lambertian::new(Color::new(0.2, 0.2, 1.0));
+    let upper_orange = Lambertian::new(Color::new(1.0, 0.5, 0.0));
+    let lower_teal = Lambertian::new(Color::new(0.2, 0.8, 0.8));
 
     // Quads
     world.add(Box::new(Quad::new(

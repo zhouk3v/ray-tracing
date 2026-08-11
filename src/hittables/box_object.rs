@@ -8,24 +8,17 @@ use crate::primitives::point3::Point3;
 use crate::primitives::ray::Ray;
 use crate::primitives::vec3::Vec3;
 
-pub struct BoxInstanceSideMaterials {
-    front: Box<dyn Material>,
-    right: Box<dyn Material>,
-    back: Box<dyn Material>,
-    left: Box<dyn Material>,
-    top: Box<dyn Material>,
-    bottom: Box<dyn Material>,
+pub struct BoxInstanceSideMaterials<T: Material> {
+    front: T,
+    right: T,
+    back: T,
+    left: T,
+    top: T,
+    bottom: T,
 }
 
-impl BoxInstanceSideMaterials {
-    pub fn new(
-        front: Box<dyn Material>,
-        right: Box<dyn Material>,
-        back: Box<dyn Material>,
-        left: Box<dyn Material>,
-        top: Box<dyn Material>,
-        bottom: Box<dyn Material>,
-    ) -> Self {
+impl<T: Material> BoxInstanceSideMaterials<T> {
+    pub fn new(front: T, right: T, back: T, left: T, top: T, bottom: T) -> Self {
         Self {
             front,
             right,
@@ -42,7 +35,11 @@ pub struct BoxInstance {
 }
 
 impl BoxInstance {
-    pub fn new(a: &Point3, b: &Point3, mat: BoxInstanceSideMaterials) -> Self {
+    pub fn new<T: Material + 'static>(
+        a: &Point3,
+        b: &Point3,
+        mat: BoxInstanceSideMaterials<T>,
+    ) -> Self {
         let mut sides = HittableList::new();
 
         // Construct the two opposite vertices with the minimum and maximum coordinates

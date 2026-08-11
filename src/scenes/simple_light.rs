@@ -24,7 +24,7 @@ pub fn simple_light() {
         Box::new(Lambertian::new_with_texture(NoiseTexture::new(4.0))),
     )));
 
-    let difflight = Box::new(DiffuseLight::new_from_color(Color::new(4.0, 4.0, 4.0)));
+    let difflight = DiffuseLight::new_from_color(Color::new(4.0, 4.0, 4.0));
     world.add(Box::new(Quad::new(
         Point3::new(3.0, 1.0, -2.0),
         Vec3::new(2.0, 0.0, 0.0),
