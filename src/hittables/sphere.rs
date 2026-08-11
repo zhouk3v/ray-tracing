@@ -12,15 +12,15 @@ struct SphereUV {
     u: f64,
     v: f64,
 }
-pub struct Sphere<T: Material> {
+pub struct Sphere {
     center: Ray,
     radius: f64,
-    mat: T,
+    mat: Box<dyn Material>,
     bbox: Aabb,
 }
 
-impl<T: Material> Sphere<T> {
-    pub fn new(static_center: Point3, radius: f64, mat: T) -> Self {
+impl Sphere {
+    pub fn new(static_center: Point3, radius: f64, mat: Box<dyn Material>) -> Self {
         let rvec = Vec3::new(radius, radius, radius);
         Sphere {
             center: Ray::new_with_default_time(static_center, Vec3::new(0.0, 0.0, 0.0)),
@@ -30,7 +30,12 @@ impl<T: Material> Sphere<T> {
         }
     }
 
-    pub fn new_moving(center1: Point3, center2: Point3, radius: f64, mat: T) -> Self {
+    pub fn new_moving(
+        center1: Point3,
+        center2: Point3,
+        radius: f64,
+        mat: Box<dyn Material>,
+    ) -> Self {
         let center = Ray::new_with_default_time(center1, center2 - center1);
         let rvec = Vec3::new(radius, radius, radius);
         let box1 = Aabb::new_from_points(&(center.at(0.0) - rvec), &(center.at(0.0) + rvec));
@@ -54,7 +59,7 @@ impl<T: Material> Sphere<T> {
     }
 }
 
-impl<T: Material> Hittable for Sphere<T> {
+impl Hittable for Sphere {
     fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord<'_>> {
         let current_center = self.center.at(r.time());
         let oc = current_center - *r.origin();
@@ -78,13 +83,14 @@ impl<T: Material> Hittable for Sphere<T> {
                 } else {
                     let outward_normal = (r.at(root) - current_center) / self.radius;
                     let uv = self.get_sphere_uv(&outward_normal);
-                    let rec = HitRecord::new(root, r, outward_normal, &self.mat, uv.u, uv.v);
+                    let rec =
+                        HitRecord::new(root, r, outward_normal, self.mat.as_ref(), uv.u, uv.v);
                     Some(rec)
                 }
             } else {
                 let outward_normal = (r.at(root) - current_center) / self.radius;
                 let uv = self.get_sphere_uv(&outward_normal);
-                let rec = HitRecord::new(root, r, outward_normal, &self.mat, uv.u, uv.v);
+                let rec = HitRecord::new(root, r, outward_normal, self.mat.as_ref(), uv.u, uv.v);
                 Some(rec)
             }
         }
