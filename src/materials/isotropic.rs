@@ -8,13 +8,13 @@ use crate::textures::solid_color::SolidColor;
 use crate::textures::texture::Texture;
 
 pub struct Isotropic {
-    tex: Box<SolidColor>,
+    tex: SolidColor,
 }
 
 impl Isotropic {
     pub fn new(albedo: Color) -> Self {
         Self {
-            tex: Box::new(SolidColor::new(albedo)),
+            tex: SolidColor::new(albedo),
         }
     }
 }

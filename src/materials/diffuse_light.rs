@@ -5,23 +5,25 @@ use crate::primitives::ray::Ray;
 use crate::textures::solid_color::SolidColor;
 use crate::textures::texture::Texture;
 
-pub struct DiffuseLight {
-    tex: Box<dyn Texture>,
+pub struct DiffuseLight<T: Texture> {
+    tex: T,
 }
 
-impl DiffuseLight {
-    pub fn new(tex: Box<dyn Texture>) -> Self {
+impl<T: Texture> DiffuseLight<T> {
+    pub fn new(tex: T) -> Self {
         Self { tex }
     }
+}
 
+impl DiffuseLight<SolidColor> {
     pub fn new_from_color(emit: Color) -> Self {
         Self {
-            tex: Box::new(SolidColor::new(emit)),
+            tex: SolidColor::new(emit),
         }
     }
 }
 
-impl Material for DiffuseLight {
+impl<T: Texture> Material for DiffuseLight<T> {
     fn scatter(&self, _r_in: &Ray, _rec: &HitRecord) -> Option<ScatterRes> {
         None
     }

@@ -117,7 +117,7 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
     )));
 
     // Earth
-    let earth_texture = Box::new(ImageTexture::new("assets/earthmap.jpg"));
+    let earth_texture = ImageTexture::new("assets/earthmap.jpg");
     let earth_surface = Box::new(Lambertian::new_with_texture(earth_texture));
     world.add(Box::new(Sphere::new(
         Point3::new(400.0, 200.0, 400.0),
@@ -126,9 +126,7 @@ pub fn final_scene(image_width: f64, samples_per_pixel: i32, max_depth: u32) {
     )));
 
     // Perlin Noise Sphere
-    let pertext = Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new(
-        0.2,
-    ))));
+    let pertext = Box::new(Lambertian::new_with_texture(NoiseTexture::new(0.2)));
     world.add(Box::new(Sphere::new(
         Point3::new(220.0, 280.0, 300.0),
         80.0,

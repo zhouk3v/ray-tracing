@@ -13,11 +13,8 @@ use crate::textures::checker_texture::CheckerTexture;
 pub fn bouncing_spheres() {
     let mut objects = HittableList::new();
 
-    let checker = Box::new(CheckerTexture::new_with_color(
-        0.32,
-        Color::new(0.2, 0.3, 0.1),
-        Color::new(0.9, 0.9, 0.9),
-    ));
+    let checker =
+        CheckerTexture::new_with_color(0.32, Color::new(0.2, 0.3, 0.1), Color::new(0.9, 0.9, 0.9));
     let ground_material = Lambertian::new_with_texture(checker);
     objects.add(Box::new(Sphere::new(
         Point3::new(0.0, -1000.0, 0.0),

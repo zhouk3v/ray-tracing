@@ -15,17 +15,13 @@ pub fn simple_light() {
     world.add(Box::new(Sphere::new(
         Point3::new(0.0, -1000.0, 0.0),
         1000.0,
-        Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new(
-            4.0,
-        )))),
+        Box::new(Lambertian::new_with_texture(NoiseTexture::new(4.0))),
     )));
 
     world.add(Box::new(Sphere::new(
         Point3::new(0.0, 2.0, 0.0),
         2.0,
-        Box::new(Lambertian::new_with_texture(Box::new(NoiseTexture::new(
-            4.0,
-        )))),
+        Box::new(Lambertian::new_with_texture(NoiseTexture::new(4.0))),
     )));
 
     let difflight = Box::new(DiffuseLight::new_from_color(Color::new(4.0, 4.0, 4.0)));

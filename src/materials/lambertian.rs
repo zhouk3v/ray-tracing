@@ -6,23 +6,25 @@ use crate::primitives::vec3::random_unit_vector;
 use crate::textures::solid_color::SolidColor;
 use crate::textures::texture::Texture;
 
-pub struct Lambertian {
-    tex: Box<dyn Texture>,
+pub struct Lambertian<T: Texture> {
+    tex: T,
 }
 
-impl Lambertian {
+impl Lambertian<SolidColor> {
     pub fn new(albedo: Color) -> Self {
         Lambertian {
-            tex: Box::new(SolidColor::new(albedo)),
+            tex: SolidColor::new(albedo),
         }
     }
+}
 
-    pub fn new_with_texture(tex: Box<dyn Texture>) -> Self {
+impl<T: Texture> Lambertian<T> {
+    pub fn new_with_texture(tex: T) -> Self {
         Lambertian { tex }
     }
 }
 
-impl Material for Lambertian {
+impl<T: Texture> Material for Lambertian<T> {
     fn scatter(&self, r_in: &Ray, rec: &HitRecord) -> Option<ScatterRes> {
         let scatter_direction = rec.normal + random_unit_vector();
 

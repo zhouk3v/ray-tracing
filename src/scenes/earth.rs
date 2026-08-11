@@ -8,7 +8,7 @@ use crate::primitives::vec3::Vec3;
 use crate::textures::image_texture::ImageTexture;
 
 pub fn earth() {
-    let earth_texture = Box::new(ImageTexture::new("assets/earthmap.jpg"));
+    let earth_texture = ImageTexture::new("assets/earthmap.jpg");
 
     let earth_surface = Box::new(Lambertian::new_with_texture(earth_texture));
 
