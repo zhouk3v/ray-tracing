@@ -16,6 +16,7 @@ enum Scene {
     CornellSmoke,
     Earth,
     Final,
+    FinalBenchmark,
     FinalHD,
     Perlin,
     Quads,
@@ -23,7 +24,7 @@ enum Scene {
 }
 
 fn main() {
-    let scene = Scene::FinalHD;
+    let scene = Scene::FinalBenchmark;
     match scene {
         Scene::Bouncing => bouncing_spheres(),
         Scene::Checkered => checkered_spheres(),
@@ -31,6 +32,7 @@ fn main() {
         Scene::CornellSmoke => cornell_smoke(),
         Scene::Earth => earth(),
         Scene::Final => final_scene(400.0, 250, 4),
+        Scene::FinalBenchmark => final_scene(800.0, 250, 10),
         Scene::FinalHD => final_scene(800.0, 10000, 40),
         Scene::Perlin => perlin_spheres(),
         Scene::Quads => quads(),
