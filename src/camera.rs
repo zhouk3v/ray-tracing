@@ -162,10 +162,10 @@ impl Camera {
         let image_height = self.image_height;
         println!("{image_width} {image_height}");
         println!("255");
-        for j in 0..image_height_int {
+        (0..image_height_int).into_iter().for_each(|j| {
             let remaining = image_height_int - j;
             eprintln!("Scanlines remaining {remaining}");
-            for i in 0..image_width_int {
+            (0..image_width_int).into_iter().for_each(|i| {
                 let pixel_color: Color = (0..self.samples_per_pixel)
                     .into_par_iter()
                     .map(|_| {
@@ -174,8 +174,8 @@ impl Camera {
                     })
                     .sum();
                 write_color(&(self.pixel_samples_scale * pixel_color));
-            }
-        }
+            });
+        });
         eprintln!("Done.");
     }
 
