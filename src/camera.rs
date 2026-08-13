@@ -166,14 +166,13 @@ impl Camera {
             let remaining = image_height_int - j;
             eprintln!("Scanlines remaining {remaining}");
             for i in 0..image_width_int {
-                let pixel_color =
-                    (0..self.samples_per_pixel)
-                        .into_iter()
-                        .fold(Color::default(), |mut acc, _| {
-                            let r = self.get_ray(i as f64, j as f64);
-                            acc += self.ray_color(&r, self.max_depth, world);
-                            acc
-                        });
+                let pixel_color: Color = (0..self.samples_per_pixel)
+                    .into_iter()
+                    .map(|_| {
+                        let r = self.get_ray(i as f64, j as f64);
+                        self.ray_color(&r, self.max_depth, world)
+                    })
+                    .sum();
                 write_color(&(self.pixel_samples_scale * pixel_color));
             }
         }
