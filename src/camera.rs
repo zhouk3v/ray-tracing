@@ -1,3 +1,5 @@
+use rayon::prelude::*;
+
 use crate::hittables::hittable::Hittable;
 use crate::primitives::color::{write_color, Color};
 use crate::primitives::interval::Interval;
@@ -164,11 +166,14 @@ impl Camera {
             let remaining = image_height_int - j;
             eprintln!("Scanlines remaining {remaining}");
             for i in 0..image_width_int {
-                let mut pixel_color = Color::default();
-                for _sample in 0..self.samples_per_pixel {
-                    let r = self.get_ray(i as f64, j as f64);
-                    pixel_color += self.ray_color(&r, self.max_depth, world);
-                }
+                let pixel_color =
+                    (0..self.samples_per_pixel)
+                        .into_iter()
+                        .fold(Color::default(), |mut acc, _| {
+                            let r = self.get_ray(i as f64, j as f64);
+                            acc += self.ray_color(&r, self.max_depth, world);
+                            acc
+                        });
                 write_color(&(self.pixel_samples_scale * pixel_color));
             }
         }
