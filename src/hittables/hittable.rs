@@ -15,7 +15,7 @@ pub struct HitRecord<'a> {
     pub front_face: bool,
 }
 
-pub trait Hittable {
+pub trait Hittable: Send + Sync {
     fn hit(&self, r: &Ray, ray_t: &Interval) -> Option<HitRecord<'_>>;
 
     fn bounding_box(&self) -> &Aabb;

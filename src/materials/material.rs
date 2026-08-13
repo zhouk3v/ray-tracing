@@ -17,7 +17,7 @@ impl ScatterRes {
     }
 }
 
-pub trait Material {
+pub trait Material: Send + Sync {
     fn scatter(&self, r_in: &Ray, rec: &HitRecord) -> Option<ScatterRes>;
 
     fn emitted(&self, _u: f64, _v: f64, _p: &Point3) -> Color {
