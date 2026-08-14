@@ -1,7 +1,7 @@
 use rayon::prelude::*;
 
 use crate::hittables::hittable::Hittable;
-use crate::primitives::color::{write_color, Color};
+use crate::primitives::color::{write_color_vec, Color};
 use crate::primitives::interval::Interval;
 use crate::primitives::point3::Point3;
 use crate::primitives::ray::Ray;
@@ -155,17 +155,18 @@ impl Camera {
     }
 
     pub fn render(&self, world: &impl Hittable) {
-        let image_width_int = self.image_width as i32;
-        let image_height_int = self.image_height as i32;
+        let image_width_usize = self.image_width as usize;
+        let image_height_usize = self.image_height as usize;
+        let mut pixels = vec![Color::default(); image_width_usize * image_height_usize];
         println!("P3");
         let image_width = self.image_width;
         let image_height = self.image_height;
         println!("{image_width} {image_height}");
         println!("255");
-        (0..image_height_int).into_iter().for_each(|j| {
-            let remaining = image_height_int - j;
+        (0..image_height_usize).into_iter().for_each(|j| {
+            let remaining = image_height_usize - j;
             eprintln!("Scanlines remaining {remaining}");
-            (0..image_width_int).into_iter().for_each(|i| {
+            (0..image_width_usize).into_iter().for_each(|i| {
                 let pixel_color: Color = (0..self.samples_per_pixel)
                     .into_par_iter()
                     .map(|_| {
@@ -173,9 +174,11 @@ impl Camera {
                         self.ray_color(&r, self.max_depth, world)
                     })
                     .sum();
-                write_color(&(self.pixel_samples_scale * pixel_color));
+                let idx = j * image_height_usize + i;
+                pixels[idx] = self.pixel_samples_scale * pixel_color;
             });
         });
+        write_color_vec(pixels);
         eprintln!("Done.");
     }
 
