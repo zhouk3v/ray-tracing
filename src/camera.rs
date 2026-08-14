@@ -1,6 +1,3 @@
-use std::sync::Arc;
-use std::sync::Mutex;
-
 use rayon::prelude::*;
 
 use crate::hittables::hittable::Hittable;
@@ -160,31 +157,20 @@ impl Camera {
     pub fn render(&self, world: &impl Hittable) {
         let image_width_usize = self.image_width as usize;
         let image_height_usize = self.image_height as usize;
-        let pixels = Arc::new(Mutex::new(vec![
-            Color::default();
-            image_width_usize * image_height_usize
-        ]));
         println!("P3");
         let image_width = self.image_width;
         let image_height = self.image_height;
         println!("{image_width} {image_height}");
         println!("255");
-        (0..image_height_usize).into_par_iter().for_each(|j| {
-            eprintln!("Processing scanline {j}");
-            (0..image_width_usize).into_par_iter().for_each(|i| {
-                let pixel_color: Color = (0..self.samples_per_pixel)
-                    .into_par_iter()
-                    .map(|_| {
-                        let r = self.get_ray(i as f64, j as f64);
-                        self.ray_color(&r, self.max_depth, world)
-                    })
-                    .sum();
-                let idx = j * image_height_usize + i;
-                let mut pixels = pixels.lock().unwrap();
-                pixels[idx] = self.pixel_samples_scale * pixel_color;
-            });
-        });
-        let pixels = pixels.lock().unwrap().to_vec();
+        let pixels: Vec<Color> = (0..image_width_usize * image_height_usize)
+            .into_par_iter()
+            .map(|index| {
+                let i = index % image_width_usize;
+                let j = index / image_width_usize;
+
+                self.render_pixel(i as f64, j as f64, world) * self.pixel_samples_scale
+            })
+            .collect();
         write_color_vec(pixels);
         eprintln!("Done.");
     }
@@ -241,5 +227,15 @@ impl Camera {
             // If ray hits nothing, return the background color
             self.background
         }
+    }
+
+    fn render_pixel(&self, i: f64, j: f64, world: &impl Hittable) -> Color {
+        (0..self.samples_per_pixel)
+            .into_par_iter()
+            .map(|_| {
+                let ray = self.get_ray(i, j);
+                self.ray_color(&ray, self.max_depth, world)
+            })
+            .sum()
     }
 }
