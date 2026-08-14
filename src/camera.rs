@@ -1,3 +1,6 @@
+use std::sync::Arc;
+use std::sync::Mutex;
+
 use rayon::prelude::*;
 
 use crate::hittables::hittable::Hittable;
@@ -157,16 +160,18 @@ impl Camera {
     pub fn render(&self, world: &impl Hittable) {
         let image_width_usize = self.image_width as usize;
         let image_height_usize = self.image_height as usize;
-        let mut pixels = vec![Color::default(); image_width_usize * image_height_usize];
+        let pixels = Arc::new(Mutex::new(vec![
+            Color::default();
+            image_width_usize * image_height_usize
+        ]));
         println!("P3");
         let image_width = self.image_width;
         let image_height = self.image_height;
         println!("{image_width} {image_height}");
         println!("255");
-        (0..image_height_usize).into_iter().for_each(|j| {
-            let remaining = image_height_usize - j;
-            eprintln!("Scanlines remaining {remaining}");
-            (0..image_width_usize).into_iter().for_each(|i| {
+        (0..image_height_usize).into_par_iter().for_each(|j| {
+            eprintln!("Processing scanline {j}");
+            (0..image_width_usize).into_par_iter().for_each(|i| {
                 let pixel_color: Color = (0..self.samples_per_pixel)
                     .into_par_iter()
                     .map(|_| {
@@ -175,9 +180,11 @@ impl Camera {
                     })
                     .sum();
                 let idx = j * image_height_usize + i;
+                let mut pixels = pixels.lock().unwrap();
                 pixels[idx] = self.pixel_samples_scale * pixel_color;
             });
         });
+        let pixels = pixels.lock().unwrap().to_vec();
         write_color_vec(pixels);
         eprintln!("Done.");
     }
