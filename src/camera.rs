@@ -231,7 +231,7 @@ impl Camera {
 
     fn render_pixel(&self, i: f64, j: f64, world: &impl Hittable) -> Color {
         (0..self.samples_per_pixel)
-            .into_par_iter()
+            .into_iter()
             .map(|_| {
                 let ray = self.get_ray(i, j);
                 self.ray_color(&ray, self.max_depth, world)
