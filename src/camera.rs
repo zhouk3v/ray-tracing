@@ -162,6 +162,7 @@ impl Camera {
         let image_height = self.image_height;
         println!("{image_width} {image_height}");
         println!("255");
+        eprintln!("Calculating pixel colors");
         let pixels: Vec<Color> = (0..image_width_usize * image_height_usize)
             .into_par_iter()
             .map(|index| {
@@ -171,6 +172,7 @@ impl Camera {
                 self.render_pixel(i as f64, j as f64, world) * self.pixel_samples_scale
             })
             .collect();
+        eprintln!("Writing pixels to file");
         write_color_vec(pixels);
         eprintln!("Done.");
     }
