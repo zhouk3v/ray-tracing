@@ -1,5 +1,7 @@
+use rayon::prelude::*;
+
 use crate::hittables::hittable::Hittable;
-use crate::primitives::color::{write_color, Color};
+use crate::primitives::color::{write_color_vec, Color};
 use crate::primitives::interval::Interval;
 use crate::primitives::point3::Point3;
 use crate::primitives::ray::Ray;
@@ -153,25 +155,23 @@ impl Camera {
     }
 
     pub fn render(&self, world: &impl Hittable) {
-        let image_width_int = self.image_width as i32;
-        let image_height_int = self.image_height as i32;
+        let image_width_usize = self.image_width as usize;
+        let image_height_usize = self.image_height as usize;
         println!("P3");
         let image_width = self.image_width;
         let image_height = self.image_height;
         println!("{image_width} {image_height}");
         println!("255");
-        for j in 0..image_height_int {
-            let remaining = image_height_int - j;
-            eprintln!("Scanlines remaining {remaining}");
-            for i in 0..image_width_int {
-                let mut pixel_color = Color::default();
-                for _sample in 0..self.samples_per_pixel {
-                    let r = self.get_ray(i as f64, j as f64);
-                    pixel_color += self.ray_color(&r, self.max_depth, world);
-                }
-                write_color(&(self.pixel_samples_scale * pixel_color));
-            }
-        }
+        let pixels: Vec<Color> = (0..image_width_usize * image_height_usize)
+            .into_par_iter()
+            .map(|index| {
+                let i = index % image_width_usize;
+                let j = index / image_width_usize;
+
+                self.render_pixel(i as f64, j as f64, world) * self.pixel_samples_scale
+            })
+            .collect();
+        write_color_vec(pixels);
         eprintln!("Done.");
     }
 
@@ -227,5 +227,15 @@ impl Camera {
             // If ray hits nothing, return the background color
             self.background
         }
+    }
+
+    fn render_pixel(&self, i: f64, j: f64, world: &impl Hittable) -> Color {
+        (0..self.samples_per_pixel)
+            .into_par_iter()
+            .map(|_| {
+                let ray = self.get_ray(i, j);
+                self.ray_color(&ray, self.max_depth, world)
+            })
+            .sum()
     }
 }

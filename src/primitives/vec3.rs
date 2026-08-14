@@ -1,4 +1,5 @@
 use std::fmt;
+use std::iter::Sum;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, Mul, MulAssign, Neg, Sub};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -177,6 +178,12 @@ impl Sub for Vec3 {
                 self.e[2] - rhs.e[2],
             ],
         }
+    }
+}
+
+impl Sum for Vec3 {
+    fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
+        iter.fold(Vec3::default(), |a, b| a + b)
     }
 }
 

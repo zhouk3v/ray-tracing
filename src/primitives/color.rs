@@ -34,6 +34,12 @@ fn linear_to_gamma(linear_component: f64) -> f64 {
     }
 }
 
+pub fn write_color_vec(pixels: Vec<Color>) {
+    for pixel in pixels.iter() {
+        write_color(pixel);
+    }
+}
+
 pub fn write_color(pixel_color: &Color) {
     let r = linear_to_gamma(pixel_color.x());
     let g = linear_to_gamma(pixel_color.y());
